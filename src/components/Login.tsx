@@ -2,7 +2,38 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import * as React from 'react'
+import { flushSync } from 'react-dom'
+import {
+  useNavigate,
+  getRouteApi,
+} from '@tanstack/react-router'
+import { useAuth } from '@/auth'
+
+const routeApi = getRouteApi('/login')
+
+
 export function Login() {
+
+    const auth = useAuth()
+    const navigate = useNavigate()
+  
+    const [isSubmitting, setIsSubmitting] = React.useState(false)
+    const [name, setName] = React.useState('')
+  
+    const search = routeApi.useSearch()
+  
+    const handleLogin = (evt: React.FormEvent<HTMLFormElement>) => {
+      evt.preventDefault()
+      setIsSubmitting(true)
+  
+      flushSync(() => {
+        auth.setUser(name)
+      })
+  
+      navigate({ to: search.redirect })
+    }
+
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
@@ -21,6 +52,8 @@ export function Login() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                onChange={(e) => setName(e.target.value)}
+                value={name}
               />
             </div>
             <div className="grid gap-2">
@@ -35,7 +68,7 @@ export function Login() {
               </div>
               <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" onClick={(e) => handleLogin(e)}>
               Login
             </Button>
             <Button variant="outline" className="w-full">
@@ -52,9 +85,9 @@ export function Login() {
       </div>
       <div className="hidden bg-muted lg:block max-h-screen">
         <img
-        //   src="https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?q=80&w=800&auto=format&fit=crop"
-        // src="https://images.unsplash.com/photo-1514924013411-cbf25faa35bb"
-        src='https://images.unsplash.com/photo-1512850183-6d7990f42385?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+          // src="https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?q=80&w=800&auto=format&fit=crop"
+          // src="https://images.unsplash.com/photo-1514924013411-cbf25faa35bb"
+          src="https://images.unsplash.com/photo-1512850183-6d7990f42385?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Image"
           width="1920"
           height="1080"
