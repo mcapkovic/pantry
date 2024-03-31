@@ -1,0 +1,163 @@
+[
+    {
+        "id": "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Ryza",
+        "category": "SIDE_DISH",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd41ed",
+        "name": "Zemiakova kasa",
+        "category": "SIDE_DISH",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "2b9d2bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Cucoriedky",
+        "category": "FRUIT",
+        "pieces": "2",
+        "storage-location": "FREEZER"
+    },
+    {
+        "id": "1b9d2bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Jablko",
+        "category": "FRUIT",
+        "pieces": "1",
+        "storage-location": "REFRIGERATOR"
+    },
+    {
+        "id": "1b9d2bcd-bb3d-4b2d-9b5d-ab8dfbb44bed",
+        "name": "Hrasok",
+        "category": "VEGETABLE",
+        "pieces": "4",
+        "storage-location": "FREEZER"
+    },
+    {
+        "id": "1b9d2bcd-bb3d-4b2d-3b5d-ab8dfbbd4bed",
+        "name": "Kukurica",
+        "category": "VEGETABLE",
+        "pieces": "1",
+        "storage-location": "FREEZER"
+    },
+    {
+        "id": "1b9d2bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Mrkva",
+        "category": "VEGETABLE",
+        "pieces": "3",
+        "storage-location": "REFRIGERATOR"
+    },
+    {
+        "id": "1b9d2bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Zemiaky",
+        "category": "VEGETABLE",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Kakao",
+        "category": "OTHER",
+        "pieces": "6",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Caj",
+        "category": "OTHER",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Kava",
+        "category": "OTHER",
+        "pieces": "3",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfwbd4bed",
+        "name": "Pivo",
+        "category": "OTHER",
+        "pieces": "1",
+        "storage-location": "REFRIGERATOR"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b1d-ab8dfbbd4bed",
+        "name": "Vino",
+        "category": "OTHER",
+        "pieces": "7",
+        "storage-location": "REFRIGERATOR"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfb544bed",
+        "name": "Whiskey",
+        "category": "OTHER",
+        "pieces": "8",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab67fbbd4bed",
+        "name": "Rum",
+        "category": "OTHER",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfgud4bed",
+        "name": "Vodka",
+        "category": "OTHER",
+        "pieces": "2",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-cb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Gin",
+        "category": "OTHER",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "name": "Tequila",
+        "category": "OTHER",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-abxdfbbd4bed",
+        "name": "Toasty",
+        "category": "PASTRY",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfbbd4bws",
+        "name": "Chlieb",
+        "category": "PASTRY",
+        "pieces": "1",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcd-bx1d-4b2d-9b5d-ab8dfbbd4bwd",
+        "name": "Bageta",
+        "category": "PASTRY",
+        "pieces": "7",
+        "storage-location": "PANTRY"
+    },
+    {
+        "id": "1b912bcr-bx1d-4b2d-9b5d-ab8dfbbd4bwd",
+        "name": "Kuracie",
+        "category": "MEAT",
+        "pieces": "1",
+        "storage-location": "FREEZER"
+    },
+    {
+        "id": "1b912bcr-bx1d-4b2d-9b5d-ab8dfbcd4bwd",
+        "name": "Hovezie",
+        "category": "MEAT",
+        "pieces": "3",
+        "storage-location": "FREEZER"
+    }
+]

@@ -32,6 +32,26 @@ function RootComponent() {
             >
               Dashboard
             </Link>
+
+            <Link
+              to={"/playground"}
+              activeProps={{
+                className: "font-bold",
+              }}
+            >
+              Playground
+            </Link>
+            
+
+            <Link
+              to={"/ingredients"}
+              activeProps={{
+                className: "font-bold",
+              }}
+            >
+              ingredients
+            </Link>
+
             <Link
               to={"/about"}
               activeProps={{
