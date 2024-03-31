@@ -157,6 +157,10 @@ export const foodStorageLocations = [
     value: "FREEZER",
   },
   {
+    label: "Chladnička",
+    value: "REFRIGERATOR",
+  },
+  {
     label: "Other",
     value: "OTHER",
   },

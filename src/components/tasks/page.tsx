@@ -20,8 +20,6 @@ function getTasks() {
 
 export default function TaskPage() {
   const tasks = getTasks()
-  // const tasks = []
-  // return(<div>sss</div>)
   return (
     <>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
