@@ -5,6 +5,7 @@ import { DataTable } from '@/components/ingredients-table/components/data-table'
 import { z } from 'zod'
 import {taskSchema} from '@/components/ingredients-table/data/schema'
 import ingredients from '@/components/ingredients-table/data/ingredients.json'
+import {AddIngredients} from '@/components/add-ingredients'
 
 export const Route = createFileRoute('/ingredients')({
     beforeLoad: ({ context, location }) => {
@@ -29,7 +30,7 @@ function IngredientsPage() {
     const tasks = getTasks()
     return <>
     <div className='m-6'> <DataTable data={tasks} columns={columns} /></div>
-   
+   <AddIngredients />
     <TaskPage />
     </>
 }
