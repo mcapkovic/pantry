@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from '@tanstack/react-router'
 import { z } from 'zod'
-import { Login } from '@/components/Login'
+import { Login } from '@/components/login'
 import { useAuth } from '@/auth'
 
 export const Route = createFileRoute('/login')({

@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import {Playground} from '@/components/Playground'
+import {Playground} from '@/components/examples/Playground'
 
 export const Route = createFileRoute('/playground')({
   beforeLoad: ({ context, location }) => {

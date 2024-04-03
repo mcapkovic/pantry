@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import TaskPage from "@/components/tasks/page";
+import TaskPage from "@/components/examples/tasks/page";
 import { columns } from "@/components/ingredients-table/components/columns";
 import { DataTable } from "@/components/ingredients-table/components/data-table";
 import { z } from "zod";
