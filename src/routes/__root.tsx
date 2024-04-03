@@ -7,6 +7,7 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 import { useAuth, type AuthContext } from "@/auth";
+import { ModeToggle } from "@/components/mode-toggle";
 
 interface MyRouterContext {
   auth: AuthContext;
@@ -24,7 +25,7 @@ function RootComponent() {
       {auth.isAuthenticated && (
         <>
           <div className="p-2 flex gap-2 text-lg">
-          <Link
+            <Link
               to={"/dashboard"}
               activeProps={{
                 className: "font-bold",
@@ -41,7 +42,6 @@ function RootComponent() {
             >
               Playground
             </Link>
-            
 
             <Link
               to={"/ingredients"}
@@ -60,6 +60,7 @@ function RootComponent() {
             >
               About
             </Link>
+            <ModeToggle />
           </div>
           <hr />
         </>

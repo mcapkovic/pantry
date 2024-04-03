@@ -1,43 +1,46 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 
-import { routeTree } from './routeTree.gen'
-import { AuthProvider, useAuth } from '@/auth'
-import './index.css'
+import { ThemeProvider } from "@/components/theme-provider";
+import { routeTree } from "./routeTree.gen";
+import { AuthProvider, useAuth } from "@/auth";
+import "./index.css";
 
 // Set up a Router instance
 const router = createRouter({
   routeTree,
-  defaultPreload: 'intent',
+  defaultPreload: "intent",
   context: {
     auth: undefined!, // This will be set after we wrap the app in an AuthProvider
   },
-})
+});
 
 // Register things for typesafety
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
 
 function InnerApp() {
-  const auth = useAuth()
-  return <RouterProvider router={router} context={{ auth }} />
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />;
 }
 
 function App() {
   return (
     <AuthProvider>
-      <InnerApp />
+      <ThemeProvider>
+        <InnerApp />
+      </ThemeProvider>
     </AuthProvider>
-  )
+  );
 }
 
-const rootElement = document.getElementById('app')!
+const rootElement = document.getElementById("app")!;
 
 if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
-  root.render(<App />)
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(<App />);
 }
