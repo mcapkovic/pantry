@@ -10,7 +10,7 @@
         "id": "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd41ed",
         "name": "Zemiakova kasa",
         "category": "SIDE_DISH",
-        "pieces": "1",
+        "pieces": null,
         "storageLocation": "PANTRY"
     },
     {
@@ -49,7 +49,7 @@
         "storageLocation": "REFRIGERATOR"
     },
     {
-        "id": "1b9d2bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "id": "1b9d2bcd-bb1d-4b2d-9b5d-ab8dfbbd4bbd",
         "name": "Zemiaky",
         "category": "VEGETABLE",
         "pieces": "1",
@@ -63,14 +63,14 @@
         "storageLocation": "PANTRY"
     },
     {
-        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8d3bbd4bed",
         "name": "Caj",
         "category": "OTHER",
         "pieces": "1",
         "storageLocation": "PANTRY"
     },
     {
-        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfbbd4bed",
+        "id": "1b912bcd-bb1d-4b2d-9b5d-ab8dfb1d4bed",
         "name": "Kava",
         "category": "OTHER",
         "pieces": "3",
