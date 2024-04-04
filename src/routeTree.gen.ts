@@ -11,19 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PlaygroundImport } from './routes/playground'
 import { Route as LoginImport } from './routes/login'
 import { Route as IngredientsImport } from './routes/ingredients'
-import { Route as DashboardImport } from './routes/dashboard'
+import { Route as ExamplesImport } from './routes/examples'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
-
-const PlaygroundRoute = PlaygroundImport.update({
-  path: '/playground',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const LoginRoute = LoginImport.update({
   path: '/login',
@@ -35,8 +29,8 @@ const IngredientsRoute = IngredientsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardRoute = DashboardImport.update({
-  path: '/dashboard',
+const ExamplesRoute = ExamplesImport.update({
+  path: '/examples',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -62,8 +56,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard': {
-      preLoaderRoute: typeof DashboardImport
+    '/examples': {
+      preLoaderRoute: typeof ExamplesImport
       parentRoute: typeof rootRoute
     }
     '/ingredients': {
@@ -74,10 +68,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/playground': {
-      preLoaderRoute: typeof PlaygroundImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -86,10 +76,9 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AboutRoute,
-  DashboardRoute,
+  ExamplesRoute,
   IngredientsRoute,
   LoginRoute,
-  PlaygroundRoute,
 ])
 
 /* prettier-ignore-end */
