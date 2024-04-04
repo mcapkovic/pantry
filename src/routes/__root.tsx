@@ -8,6 +8,7 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 import { useAuth, type AuthContext } from "@/auth";
 import { ModeToggle } from "@/components/mode-toggle";
+import { MainLayout } from "@/components/main-layout";
 
 interface MyRouterContext {
   auth: AuthContext;
@@ -19,6 +20,42 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootComponent() {
   const auth = useAuth();
+
+  return (
+    <>
+      <MainLayout
+      links={[
+        {
+          to: "/",
+          label: "Home",
+        },
+        {
+          to: "/ingredients",
+          label: "Ingredients",
+        },
+      
+      ]}
+      pageContent={<Outlet />}>
+        <Link
+          to={"/"}
+          activeProps={{
+            className: "font-bold",
+          }}
+        >
+          Home
+        </Link>
+        <Link
+          to={"/ingredients"}
+          activeProps={{
+            className: "font-bold",
+          }}
+        >
+          Ingredients
+        </Link>
+      </MainLayout>
+      <TanStackRouterDevtools position="bottom-right" initialIsOpen={false} />
+    </>
+  );
 
   return (
     <>
