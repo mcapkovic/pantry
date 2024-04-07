@@ -1,28 +1,13 @@
-// import Link from "next/link"
+import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { ModeToggle } from "@/components/mode-toggle";
 import {
-  Activity,
-  ArrowUpRight,
   CircleUser,
-  CreditCard,
-  DollarSign,
   Menu,
   Package2,
-  Search,
-  Users,
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,37 +16,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useAuth } from "@/auth";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { HeaderSearch } from "@/components/page-header/search";
 
-export function MainLayout({ pageContent, links }) {
+interface MainLayoutProps {
+  pageContent: React.ReactNode;
+  links: { to: string; label: string }[];
+}
+
+export function MainLayout({ pageContent, links }: MainLayoutProps) {
   const auth = useAuth();
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
     auth.setUser(null);
     navigate({ to: "/" });
-  };
-
-  const handleSearch = (event) => {
-    // console.log(");
-    navigate({
-      to: "/ingredients",
-      search: {
-        search: "hellooo",
-      },
-    });
   };
 
   return (
@@ -131,27 +101,7 @@ export function MainLayout({ pageContent, links }) {
           </SheetContent>
         </Sheet>
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <form
-            className="ml-auto flex-1 sm:flex-initial"
-            onSubmit={(e) => {
-                e.preventDefault()
-                navigate({
-                    to: "/ingredients",
-                    search: {
-                      search: e.target?.[0]?.value,
-                    },
-                  });
-            }}
-          >
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              />
-            </div>
-          </form>
+          <HeaderSearch />
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -171,7 +121,6 @@ export function MainLayout({ pageContent, links }) {
           </DropdownMenu>
         </div>
       </header>
-      {/* <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8"> */}
       <main>{pageContent}</main>
     </div>
   );

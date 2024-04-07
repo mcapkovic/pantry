@@ -1,6 +1,4 @@
-"use client"
-
-import * as React from "react"
+import React, { useEffect } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,7 +12,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -23,32 +21,47 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { DataTablePagination } from "./data-table-pagination"
-import { DataTableToolbar } from "./data-table-toolbar"
+import { DataTablePagination } from "./data-table-pagination";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  search?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  search,
 }: DataTableProps<TData, TValue>) {
-
-  
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [{
-      id:'name',
-      value: 'ryz'
-    }]
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+    search != null
+      ? [
+          {
+            id: "name",
+            value: search,
+          },
+        ]
+      : []
+  );
+  console.log("columnFilters", columnFilters);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
+  // useEffect(() => {
+  //   if (search != null) {
+  //     setColumnFilters(currentFilter => {
+  //       const newFilter = currentFilter.filter(filter => filter.id !== 'name')
+  //       return [...newFilter, { id: 'name', value: search }]
+  //     });
+  //   }
+  // })
+
 
   const table = useReactTable({
     data,
@@ -70,9 +83,17 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+  });
 
-  console.log('table', table)
+  useEffect(() => {
+    const nameColumn = table.getColumn("name");
+    const currentSearch = nameColumn?.getFilterValue()
+    if (search !== currentSearch) {
+      nameColumn?.setFilterValue(search);
+    }
+  }, [search, table]);
+
+  console.log("table", table);
 
   return (
     <div className="space-y-4">
@@ -92,7 +113,7 @@ export function DataTable<TData, TValue>({
                             header.getContext()
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -129,5 +150,5 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
     </div>
-  )
+  );
 }

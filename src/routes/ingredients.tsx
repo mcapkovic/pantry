@@ -26,12 +26,12 @@ function getTasks() {
 
 function IngredientsPage() {
   const tasks = getTasks();
-  const a = Route.useSearch()
+  const { search } = Route.useSearch();
   return (
     <div className="mt-3">
       <AddIngredients />
       <div className="m-6">
-        <DataTable data={tasks} columns={columns} search= />
+        <DataTable data={tasks} columns={columns} search={search} />
       </div>
     </div>
   );
