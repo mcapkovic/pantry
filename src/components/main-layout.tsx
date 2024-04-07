@@ -54,6 +54,16 @@ export function MainLayout({ pageContent, links }) {
     navigate({ to: "/" });
   };
 
+  const handleSearch = (event) => {
+    // console.log(");
+    navigate({
+      to: "/ingredients",
+      search: {
+        search: "hellooo",
+      },
+    });
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -68,6 +78,7 @@ export function MainLayout({ pageContent, links }) {
 
           {links.map((link) => (
             <Link
+              key={link.to}
               to={link.to}
               activeProps={{
                 className: "text-foreground",
@@ -104,6 +115,7 @@ export function MainLayout({ pageContent, links }) {
 
               {links.map((link) => (
                 <Link
+                  key={link.to}
                   to={link.to}
                   activeProps={{
                     className: "hover:text-foreground",
@@ -119,7 +131,18 @@ export function MainLayout({ pageContent, links }) {
           </SheetContent>
         </Sheet>
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <form className="ml-auto flex-1 sm:flex-initial">
+          <form
+            className="ml-auto flex-1 sm:flex-initial"
+            onSubmit={(e) => {
+                e.preventDefault()
+                navigate({
+                    to: "/ingredients",
+                    search: {
+                      search: e.target?.[0]?.value,
+                    },
+                  });
+            }}
+          >
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input

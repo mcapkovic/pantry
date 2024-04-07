@@ -37,11 +37,16 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+
+  
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [{
+      id:'name',
+      value: 'ryz'
+    }]
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
 
@@ -66,6 +71,8 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
+  console.log('table', table)
 
   return (
     <div className="space-y-4">

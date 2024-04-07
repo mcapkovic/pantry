@@ -24,35 +24,18 @@ function RootComponent() {
   return (
     <>
       <MainLayout
-      links={[
-        {
-          to: "/",
-          label: "Home",
-        },
-        {
-          to: "/ingredients",
-          label: "Ingredients",
-        },
-      
-      ]}
-      pageContent={<Outlet />}>
-        <Link
-          to={"/"}
-          activeProps={{
-            className: "font-bold",
-          }}
-        >
-          Home
-        </Link>
-        <Link
-          to={"/ingredients"}
-          activeProps={{
-            className: "font-bold",
-          }}
-        >
-          Ingredients
-        </Link>
-      </MainLayout>
+        links={[
+          {
+            to: "/",
+            label: "Home",
+          },
+          {
+            to: "/ingredients",
+            label: "Ingredients",
+          },
+        ]}
+        pageContent={<Outlet />}
+      />
       <TanStackRouterDevtools position="bottom-right" initialIsOpen={false} />
     </>
   );
