@@ -6,6 +6,10 @@ import { taskSchema } from "@/components/ingredients-table/data/schema";
 import ingredients from "@/components/ingredients-table/data/ingredients.json";
 import { AddIngredients } from "@/components/add-ingredients";
 
+type ProductSearch = {
+  search: string;
+};
+
 export const Route = createFileRoute("/ingredients")({
   beforeLoad: ({ context, location }) => {
     if (!context.auth.isAuthenticated) {
@@ -18,6 +22,11 @@ export const Route = createFileRoute("/ingredients")({
     }
   },
   component: IngredientsPage,
+  validateSearch: (searchData: Record<string, string>): ProductSearch => {
+    return {
+      search: searchData.search,
+    };
+  },
 });
 
 function getTasks() {

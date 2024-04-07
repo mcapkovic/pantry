@@ -1,7 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Search } from "lucide-react";
-
 import { useState } from "react";
+
+import { Input } from "@/components/ui/input";
 
 export function HeaderSearch() {
   const navigate = useNavigate();
