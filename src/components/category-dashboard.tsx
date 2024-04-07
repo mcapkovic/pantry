@@ -10,7 +10,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ingredients from "@/components/ingredients-table/data/ingredients.json";
-import { CheckIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, DotIcon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  ChevronRightIcon,
+  DotFilledIcon,
+  DotsHorizontalIcon,
+  DotIcon,
+} from "@radix-ui/react-icons";
 
 function IngredientRow({ ingredient }) {
   return (
@@ -36,23 +42,25 @@ export function CategoryDashboard() {
   }, [ingredients]);
 
   return (
-    <div className="flex flex-wrap gap-4">
-      {groupedValues.map(([groupId, values]) => {
-        return (
-          <Card key={groupId} className="w-80">
-            <CardHeader>
-              <CardTitle>{groupId}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul>
-                {values.map((value) => (
-                  <IngredientRow key={value.id} ingredient={value} />
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        );
-      })}
+    <div className="flex justify-center">
+      <div className="p-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:max-w-2xl md:max-w-5xl grow sm:grow-0	">
+        {groupedValues.map(([groupId, values]) => {
+          return (
+            <Card key={groupId} className="">
+              <CardHeader>
+                <CardTitle>{groupId}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul>
+                  {values.map((value) => (
+                    <IngredientRow key={value.id} ingredient={value} />
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 }
