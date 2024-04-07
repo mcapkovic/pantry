@@ -50,18 +50,7 @@ export function DataTable<TData, TValue>({
         ]
       : []
   );
-  console.log("columnFilters", columnFilters);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-
-  // useEffect(() => {
-  //   if (search != null) {
-  //     setColumnFilters(currentFilter => {
-  //       const newFilter = currentFilter.filter(filter => filter.id !== 'name')
-  //       return [...newFilter, { id: 'name', value: search }]
-  //     });
-  //   }
-  // })
-
 
   const table = useReactTable({
     data,
@@ -87,13 +76,11 @@ export function DataTable<TData, TValue>({
 
   useEffect(() => {
     const nameColumn = table.getColumn("name");
-    const currentSearch = nameColumn?.getFilterValue()
+    const currentSearch = nameColumn?.getFilterValue();
     if (search !== currentSearch) {
       nameColumn?.setFilterValue(search);
     }
   }, [search, table]);
-
-  console.log("table", table);
 
   return (
     <div className="space-y-4">

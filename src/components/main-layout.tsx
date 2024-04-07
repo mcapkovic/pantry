@@ -1,4 +1,3 @@
-import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import {
   CircleUser,
@@ -27,11 +26,10 @@ interface MainLayoutProps {
 
 export function MainLayout({ pageContent, links }: MainLayoutProps) {
   const auth = useAuth();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     auth.setUser(null);
-    navigate({ to: "/" });
+    window.location.reload();
   };
 
   return (
