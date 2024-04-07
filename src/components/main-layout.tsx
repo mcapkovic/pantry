@@ -1,6 +1,6 @@
 // import Link from "next/link"
 import { Link } from "@tanstack/react-router";
-
+import { ModeToggle } from "@/components/mode-toggle";
 import {
   Activity,
   ArrowUpRight,
@@ -41,8 +41,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAuth } from "@/auth";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 
 export function MainLayout({ pageContent, links }) {
+  const auth = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    auth.setUser(null);
+    navigate({ to: "/" });
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -118,6 +129,7 @@ export function MainLayout({ pageContent, links }) {
               />
             </div>
           </form>
+          <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -131,7 +143,7 @@ export function MainLayout({ pageContent, links }) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
