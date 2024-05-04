@@ -21,6 +21,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 function RootComponent() {
   const auth = useAuth();
 
+  if(!auth.isAuthenticated) return <Outlet />;
+
   return (
     <>
       <MainLayout
