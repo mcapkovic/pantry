@@ -1,38 +1,40 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { supabase } from "@/lib/supabaseClient";
 
-import * as React from 'react'
-import { flushSync } from 'react-dom'
-import {
-  useNavigate,
-  getRouteApi,
-} from '@tanstack/react-router'
-import { useAuth } from '@/auth'
+import * as React from "react";
+import { useNavigate, getRouteApi } from "@tanstack/react-router";
+import { useAuth } from "@/auth";
 
-const routeApi = getRouteApi('/login')
-
+const routeApi = getRouteApi("/login");
 
 export function Login() {
+  const auth = useAuth();
+  const navigate = useNavigate();
 
-    const auth = useAuth()
-    const navigate = useNavigate()
-  
-    const [isSubmitting, setIsSubmitting] = React.useState(false)
-    const [name, setName] = React.useState('')
-  
-    const search = routeApi.useSearch()
-  
-    const handleLogin = (evt: React.FormEvent<HTMLFormElement>) => {
-      evt.preventDefault()
-      setIsSubmitting(true)
-  
-      flushSync(() => {
-        auth.setUser(name)
-      })
-  
-      navigate({ to: search.redirect })
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [name, setName] = React.useState("");
+
+  const search = routeApi.useSearch();
+
+  const handleLogin = async (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    setIsSubmitting(true);
+
+    let { error } = await supabase.auth.signInWithPassword({
+      email: "cupo44+test3@gmail.com",
+      password: "heslo",
+    });
+
+    if (error) {
+      console.error("Error logging in:", error.message);
+      return;
     }
+    setIsSubmitting(false);
+  };
+
+  if (auth.isAuthenticated) navigate({ to: search.redirect });
 
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
@@ -68,7 +70,11 @@ export function Login() {
               </div>
               <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full" onClick={(e) => handleLogin(e)}>
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={(e) => handleLogin(e)}
+            >
               Login
             </Button>
             <Button variant="outline" className="w-full">

@@ -16,8 +16,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useAuth } from "@/auth";
 import { HeaderSearch } from "@/components/page-header/search";
+import { supabase } from "@/lib/supabaseClient";
 
 interface MainLayoutProps {
   pageContent: React.ReactNode;
@@ -25,10 +25,13 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ pageContent, links }: MainLayoutProps) {
-  const auth = useAuth();
 
-  const handleLogout = () => {
-    auth.setUser(null);
+  const handleLogout =async () => {
+    let { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error("Error logging out:", error.message);
+      return;
+    }
     window.location.reload();
   };
 
