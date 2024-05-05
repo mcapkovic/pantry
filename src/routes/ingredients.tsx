@@ -1,10 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { columns } from "@/components/ingredients-table/components/columns";
-import { DataTable } from "@/components/ingredients-table/components/data-table";
-import { z } from "zod";
-import { taskSchema } from "@/components/ingredients-table/data/schema";
-import ingredients from "@/components/ingredients-table/data/ingredients.json";
 import { AddIngredients } from "@/components/add-ingredients";
+import { Ingredients } from "@/components/ingredients";
 
 type ProductSearch = {
   search: string;
@@ -29,19 +25,11 @@ export const Route = createFileRoute("/ingredients")({
   },
 });
 
-function getTasks() {
-  return z.array(taskSchema).parse(ingredients);
-}
-
 function IngredientsPage() {
-  const tasks = getTasks();
-  const { search } = Route.useSearch();
+  return <Ingredients />
   return (
     <div className="mt-3">
       <AddIngredients />
-      <div className="m-6">
-        <DataTable data={tasks} columns={columns} search={search} />
-      </div>
     </div>
   );
 }
