@@ -6,13 +6,6 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
-
-import {
-  priorities,
-  statuses,
-  foodCategories,
-  foodStorageLocations,
-} from "../data/data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
@@ -21,9 +14,10 @@ interface DataTableToolbarProps<TData> {
 
 export function DataTableToolbar<TData>({
   table,
+  foodOptions,
+  locationOptions
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -40,14 +34,14 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("category")}
             title="Kategoria"
-            options={foodCategories}
+            options={foodOptions}
           />
         )}
         {table.getColumn("storageLocation") && (
           <DataTableFacetedFilter
             column={table.getColumn("storageLocation")}
             title="Miesto"
-            options={foodStorageLocations}
+            options={locationOptions}
           />
         )}
         {isFiltered && (
