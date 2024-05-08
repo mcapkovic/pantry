@@ -21,11 +21,12 @@ export const columns: ColumnDef<Task>[] = [
     // enableHiding: false,
   },
   {
-    accessorKey: "category",
+    id:'category',
+    accessorKey: "category.id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Kategoria" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("category")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{row.original.category?.name}</div>,
     // enableSorting: false,
     // enableHiding: false,
     filterFn: (row, id, value) => {
@@ -33,11 +34,12 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: "storageLocation",
+    id : 'storageLocation',
+    accessorKey: "storageLocation.id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Miesto" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("storageLocation")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{row.original.storageLocation?.name}</div>,
     // enableSorting: false,
     // enableHiding: false,
     filterFn: (row, id, value) => {

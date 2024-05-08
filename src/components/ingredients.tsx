@@ -6,13 +6,13 @@ import { DataTable } from "@/components/ingredients-table/components/data-table"
 import { Route } from "@/routes/ingredients";
 import { columns } from "@/components/ingredients-table/components/columns";
 import { itemSchema } from "@/components/ingredients-table/data/schema";
-import { Item } from "@/components/ingredients-table/data/schema";
+import { Item, Option } from "@/components/ingredients-table/data/schema";
 
 export function Ingredients() {
   const { search } = Route.useSearch();
   const [tasks, setTasks] = useState<Item[]>([]);
-  const [foodOptions, setFoodOptions] = useState([]);
-  const [locationOptions, setLocationOptions] = useState([]);
+  const [foodOptions, setFoodOptions] = useState<Option[]>([]);
+  const [locationOptions, setLocationOptions] = useState<Option[]>([]);
 
   useEffect(() => {
     async function getIngredients() {
@@ -36,8 +36,8 @@ export function Ingredients() {
           return {
             id: item.id,
             name: item.name,
-            category: item.category?.name ?? null,
-            storageLocation: item.location?.name ?? null,
+            category: item.category ?? {id: 'empty', name: ''},
+            storageLocation: item.location ?? {id: 'empty', name: ''},
           };
         });
         setTasks(z.array(itemSchema).parse(newData));
