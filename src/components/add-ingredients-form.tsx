@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Option } from "@/components/ingredients-table/data/schema";
+import { supabase } from "@/lib/supabaseClient";
 
 interface AddIngredientsFormProps {
   closeDialog: () => void;
@@ -50,10 +51,21 @@ export function AddIngredientsForm({
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit({
+    name,
+    category,
+    location,
+    pieces,
+  }: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+
+    const { data, error } = await supabase
+      .from("ingredient")
+      .insert([{ name, location, category, quantity: pieces, household_id: '27c3c745-3cfe-461a-a7ae-d61b78ea77f4' }])
+      .select();
+
+    console.log(data, error);
     if (closeDialog != null) closeDialog();
   }
 
