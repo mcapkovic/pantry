@@ -7,6 +7,7 @@ import { Route } from "@/routes/ingredients";
 import { columns } from "@/components/ingredients-table/components/columns";
 import { itemSchema } from "@/components/ingredients-table/data/schema";
 import { Item, Option } from "@/components/ingredients-table/data/schema";
+import { AddIngredients } from "@/components/add-ingredients";
 
 export function Ingredients() {
   const { search } = Route.useSearch();
@@ -36,8 +37,8 @@ export function Ingredients() {
           return {
             id: item.id,
             name: item.name,
-            category: item.category ?? {id: 'empty', name: ''},
-            storageLocation: item.location ?? {id: 'empty', name: ''},
+            category: item.category ?? { id: "empty", name: "" },
+            storageLocation: item.location ?? { id: "empty", name: "" },
           };
         });
         setTasks(z.array(itemSchema).parse(newData));
@@ -94,6 +95,10 @@ export function Ingredients() {
   return (
     <div className="mt-3">
       <h1>Ingredients</h1>
+      <AddIngredients
+        foodOptions={foodOptions}
+        locationOptions={locationOptions}
+      />
       <div className="m-6">
         <DataTable
           data={tasks}
