@@ -7,7 +7,7 @@ import { Route } from "@/routes/ingredients";
 import { getColumns } from "@/components/ingredients-table/components/columns";
 import { itemSchema } from "@/components/ingredients-table/data/schema";
 import { Item, Option } from "@/components/ingredients-table/data/schema";
-import { AddIngredients } from "@/components/add-ingredients";
+import { IngredientEditor } from "@/components/ingredient-editor";
 import { Button } from "./ui/button";
 
 export function Ingredients() {
@@ -112,13 +112,13 @@ export function Ingredients() {
   return (
     <div className="mt-3">
       <h1>Ingredients</h1>
-      <AddIngredients
+      <IngredientEditor
         title="Pridat ingredienciu"
         foodOptions={foodOptions}
         locationOptions={locationOptions}
         modalTrigger={<Button variant="outline">add ingredient</Button>}
       />
-      <AddIngredients
+      <IngredientEditor
         foodOptions={foodOptions}
         locationOptions={locationOptions}
         title="Upravit ingredienciu"

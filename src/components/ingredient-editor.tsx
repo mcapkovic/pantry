@@ -69,7 +69,7 @@ interface AddIngredientsProps {
   row: Item | null;
 }
 
-export function AddIngredients({
+export function IngredientEditor({
   foodOptions,
   locationOptions,
   title,

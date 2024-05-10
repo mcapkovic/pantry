@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { AddIngredients } from "@/components/add-ingredients";
+import { IngredientEditor } from "@/components/ingredient-editor";
 import { Ingredients } from "@/components/ingredients";
 
 type ProductSearch = {
@@ -29,7 +29,7 @@ function IngredientsPage() {
   return <Ingredients />
   return (
     <div className="mt-3">
-      <AddIngredients />
+      <IngredientEditor />
     </div>
   );
 }
