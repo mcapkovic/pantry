@@ -58,18 +58,23 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Option } from "@/components/ingredients-table/data/schema";
+import { Item, Option } from "@/components/ingredients-table/data/schema";
 
 import { AddIngredientsForm } from "./add-ingredients-form";
 
 interface AddIngredientsProps {
   foodOptions?: Option[];
   locationOptions?: Option[];
+  modalTrigger?: React.ReactNode;
+  row: Item | null;
 }
 
 export function AddIngredients({
   foodOptions,
   locationOptions,
+  title,
+  modalTrigger,
+  row,
 }: AddIngredientsProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -77,12 +82,16 @@ export function AddIngredients({
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+        {modalTrigger != null && (
+          <DialogTrigger asChild>{modalTrigger}</DialogTrigger>
+        )}
+        {/* <DialogTrigger asChild>
           <Button variant="outline">add ingredient</Button>
-        </DialogTrigger>
+        </DialogTrigger> */}
+
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Pridat</DialogTitle>
+			{title && <DialogTitle>{title}</DialogTitle> }
             {/* <DialogDescription>
 							Make changes to your profile here. Click save when you're done.
 						</DialogDescription> */}
@@ -92,6 +101,7 @@ export function AddIngredients({
             closeDialog={() => setOpen(false)}
             foodOptions={foodOptions}
             locationOptions={locationOptions}
+			row={row}
           />
           {/* <DialogFooter>
 						<DialogClose asChild>

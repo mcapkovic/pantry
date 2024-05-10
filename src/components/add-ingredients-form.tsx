@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,13 +21,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Option } from "@/components/ingredients-table/data/schema";
+import { Item, Option } from "@/components/ingredients-table/data/schema";
 import { supabase } from "@/lib/supabaseClient";
 
 interface AddIngredientsFormProps {
   closeDialog: () => void;
-  foodOptions: Option[];
-  locationOptions: Option[];
+  foodOptions?: Option[];
+  locationOptions?: Option[];
+  row: Item | null;
 }
 
 const formSchema = z.object({
@@ -42,13 +44,32 @@ export function AddIngredientsForm({
   closeDialog,
   foodOptions,
   locationOptions,
+  row,
 }: AddIngredientsFormProps) {
+  const defaultValues = useMemo(() => {
+    if (row == null) {
+      return {
+        name: "",
+        pieces: "1",
+      };
+    }
+    return {
+      name: row.name,
+      pieces: "1",
+      category:
+        row?.category != null && row?.category?.id != "empty"
+          ? row.category.id
+          : undefined,
+      location:
+        row?.storageLocation != null && row?.storageLocation?.id != "empty"
+          ? row.storageLocation.id
+          : undefined,
+    };
+  }, [row]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      pieces: "1",
-    },
+    defaultValues,
   });
 
   async function onSubmit({
@@ -62,7 +83,15 @@ export function AddIngredientsForm({
 
     const { data, error } = await supabase
       .from("ingredient")
-      .insert([{ name, location, category, quantity: pieces, household_id: '27c3c745-3cfe-461a-a7ae-d61b78ea77f4' }])
+      .insert([
+        {
+          name,
+          location,
+          category,
+          quantity: pieces,
+          household_id: "27c3c745-3cfe-461a-a7ae-d61b78ea77f4",
+        },
+      ])
       .select();
 
     console.log(data, error);

@@ -14,6 +14,7 @@ export const itemSchema = z.object({
   name: z.string(),
   category: optionsSchema.or(z.null()) ,
   storageLocation: optionsSchema.or(z.null()),
+  quantity: z.number(),
 })
 
 export type Item = z.infer<typeof itemSchema>
