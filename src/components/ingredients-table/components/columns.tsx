@@ -97,6 +97,11 @@ export function getColumns({
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
       },
+      sortingFn: (rowA, rowB, id) => {
+        return (rowA.original[id]?.name ?? "").localeCompare(
+          rowB.original[id]?.name ?? ""
+        );
+      },
     },
     {
       id: "storageLocation",
@@ -108,6 +113,11 @@ export function getColumns({
 
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
+      },
+      sortingFn: (rowA, rowB, id) => {        
+        return (rowA.original[id]?.name ?? "").localeCompare(
+          rowB.original[id]?.name ?? ""
+        );
       },
     },
     {
