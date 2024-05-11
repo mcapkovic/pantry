@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { clsx } from 'clsx';
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useRef } from "react";
@@ -21,15 +23,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Item, Option } from "@/components/ingredients-table/data/schema";
+import { Item, OptionItem } from "@/components/ingredients-table/data/schema";
 import { supabase } from "@/lib/supabaseClient";
 import { DialogClose } from "./ui/dialog";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { DESKTOP_BREAKPOINT_QUERY } from "@/components/ui/responsive-dialog";
 
 interface AddIngredientsFormProps {
-  foodOptions?: Option[];
-  locationOptions?: Option[];
+  foodOptions: OptionItem[];
+  locationOptions: OptionItem[];
   row?: Item | null;
-  householdId?: string | null; 
+  householdId?: string | null;
 }
 
 const formSchema = z.object({
@@ -48,6 +52,8 @@ export function AddIngredientsForm({
   householdId,
 }: AddIngredientsFormProps) {
   const closeTriggerRef = useRef<HTMLButtonElement>(null);
+  const isDesktop = useMediaQuery(DESKTOP_BREAKPOINT_QUERY);
+
   const defaultValues = useMemo(() => {
     if (row == null) {
       return {
@@ -135,7 +141,7 @@ export function AddIngredientsForm({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nazov</FormLabel>
+              <FormLabel>Názov</FormLabel>
               <FormControl>
                 <Input placeholder="Jablká, Ryza, ..." {...field} />
               </FormControl>
@@ -149,7 +155,7 @@ export function AddIngredientsForm({
           name="pieces"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Pocet</FormLabel>
+              <FormLabel>Množstvo</FormLabel>
               <FormControl>
                 <Input placeholder="1" type="number" {...field} />
               </FormControl>
@@ -163,7 +169,7 @@ export function AddIngredientsForm({
           name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Kategoria</FormLabel>
+              <FormLabel>Kategória</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -172,8 +178,8 @@ export function AddIngredientsForm({
                 </FormControl>
                 <SelectContent>
                   {foodOptions.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.label}
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -200,8 +206,8 @@ export function AddIngredientsForm({
                 </FormControl>
                 <SelectContent>
                   {locationOptions.map((location) => (
-                    <SelectItem key={location.value} value={location.value}>
-                      {location.label}
+                    <SelectItem key={location.id} value={location.id}>
+                      {location.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -210,7 +216,7 @@ export function AddIngredientsForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button className={clsx(!isDesktop && 'w-full')} type="submit">Submit</Button>
         <DialogClose className="hidden" ref={closeTriggerRef}>
           hidden close button
         </DialogClose>

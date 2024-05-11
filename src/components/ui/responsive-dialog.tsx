@@ -28,6 +28,8 @@ interface ResponsiveDialogProps {
   dialogTrigger?: React.ReactNode;
 }
 
+export const DESKTOP_BREAKPOINT_QUERY = "(min-width: 768px)";
+
 export function ResponsiveDialog({
   children,
   title,
@@ -35,7 +37,7 @@ export function ResponsiveDialog({
   dialogTrigger,
 }: ResponsiveDialogProps) {
   const [open, setOpen] = React.useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery(DESKTOP_BREAKPOINT_QUERY);
 
   if (isDesktop) {
     return (
@@ -68,7 +70,9 @@ export function ResponsiveDialog({
             <DrawerDescription>{description}</DrawerDescription>
           )}
         </DrawerHeader>
+        <div className="px-4">
         {children}
+        </div>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
