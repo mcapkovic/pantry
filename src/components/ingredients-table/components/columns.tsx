@@ -76,7 +76,7 @@ export function getColumns({
       ),
       cell: ({ row }) => <div>{row.getValue("name")} </div>,
       // enableSorting: false,
-      // enableHiding: false,
+      enableHiding: false,
     },
 
     {
