@@ -29,6 +29,7 @@ interface AddIngredientsFormProps {
   foodOptions?: Option[];
   locationOptions?: Option[];
   row?: Item | null;
+  householdId?: string | null; 
 }
 
 const formSchema = z.object({
@@ -44,6 +45,7 @@ export function AddIngredientsForm({
   foodOptions,
   locationOptions,
   row,
+  householdId,
 }: AddIngredientsFormProps) {
   const closeTriggerRef = useRef<HTMLButtonElement>(null);
   const defaultValues = useMemo(() => {
@@ -105,7 +107,7 @@ export function AddIngredientsForm({
           location,
           category,
           quantity: pieces,
-          household_id: "27c3c745-3cfe-461a-a7ae-d61b78ea77f4",
+          household_id: householdId, // TODO: this should be on BE
         },
       ])
       .select();
@@ -114,9 +116,6 @@ export function AddIngredientsForm({
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
     const action = row ? onEdit : onAdd;
     const { data, error } = await action(values);
 

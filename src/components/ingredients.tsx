@@ -18,6 +18,7 @@ export function Ingredients() {
   const [locationOptions, setLocationOptions] = useState<Option[]>([]);
   const modalTriggerRef = useRef<HTMLButtonElement>(null);
   const [row, setRow] = useState<Item | null>(null);
+  const [householdId, setHouseholdId] = useState<string | null>(null);
 
   useEffect(() => {
     async function getIngredients() {
@@ -32,13 +33,17 @@ export function Ingredients() {
             id,
             name
         ),
-        quantity
+        quantity,
+        household_id
       `).order('created_at', { ascending: true });
+
+      let householdId: string| null = null;
 
       if (error) {
         console.warn(error);
       } else if (data) {
         const newData = data.map((item) => {
+          if(householdId == null) householdId = item.household_id;
           return {
             id: item.id,
             name: item.name,
@@ -48,6 +53,7 @@ export function Ingredients() {
           };
         });
         setTasks(z.array(itemSchema).parse(newData));
+        setHouseholdId(householdId);
       }
     }
 
@@ -102,7 +108,6 @@ export function Ingredients() {
     () =>
       getColumns({
         onEdit: (tableRow) => {
-          console.log(tableRow.original);
           setRow(tableRow.original);
           modalTriggerRef.current?.click();
         },
@@ -131,6 +136,7 @@ export function Ingredients() {
           foodOptions={foodOptions}
           locationOptions={locationOptions}
           row={row}
+          householdId={householdId}
         />
       </ResponsiveDialog>
       <div className="m-6">
