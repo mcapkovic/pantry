@@ -13,6 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useLocalStorage } from "usehooks-ts";
 
 import {
   Table,
@@ -25,6 +26,7 @@ import {
 import { OptionItem } from "@/components/ingredients-table/data/schema";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { useAuth } from "@/auth";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,9 +43,11 @@ export function DataTable<TData, TValue>({
   foodOptions,
   locationOptions,
 }: DataTableProps<TData, TValue>) {
+  const auth = useAuth();
+
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    useLocalStorage<VisibilityState>(`ingredients-table-col-visibility-${auth?.user?.id}`, {});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     search != null
       ? [

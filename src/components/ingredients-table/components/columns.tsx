@@ -70,12 +70,6 @@ export function getColumns({
 }: IGetColumns): ColumnDef<Item>[] {
   return [
     {
-      id: "actions",
-      cell: ({ row }) => (
-        <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
-      ),
-    },
-    {
       accessorKey: "name",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Názov" />
@@ -84,7 +78,7 @@ export function getColumns({
       // enableSorting: false,
       // enableHiding: false,
     },
-   
+
     {
       accessorKey: "quantity",
       header: ({ column }) => (
@@ -99,7 +93,7 @@ export function getColumns({
         <DataTableColumnHeader column={column} title="Kategória" />
       ),
       cell: ({ row }) => <div>{row.original.category?.name}</div>,
-  
+
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
       },
@@ -111,11 +105,16 @@ export function getColumns({
         <DataTableColumnHeader column={column} title="Miesto" />
       ),
       cell: ({ row }) => <div>{row.original.storageLocation?.name}</div>,
-  
+
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
       },
     },
-  
+    {
+      id: "actions",
+      cell: ({ row }) => (
+        <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
+      ),
+    },
   ];
 }
