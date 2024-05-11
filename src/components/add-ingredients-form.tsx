@@ -143,7 +143,7 @@ export function AddIngredientsForm({
             <FormItem>
               <FormLabel>Názov</FormLabel>
               <FormControl>
-                <Input placeholder="Jablká, Ryza, ..." {...field} />
+                <Input placeholder="Jablká, Ryza, ..." {...field} autoFocus/>
               </FormControl>
               <FormMessage />
             </FormItem>
