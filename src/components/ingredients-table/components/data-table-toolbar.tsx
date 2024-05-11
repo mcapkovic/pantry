@@ -22,41 +22,43 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   return (
-    <div className="flex flex-1 items-center space-x-2 overflow-x-auto">
-      <Input
-        placeholder="Nazov..."
-        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn("name")?.setFilterValue(event.target.value)
-        }
-        className="h-8 w-[150px] lg:w-[250px]"
-      />
-      {table.getColumn("category") && (
-        <DataTableFacetedFilter
-          column={table.getColumn("category")}
-          title="Kategoria"
-          options={foodOptions}
+    <div className="overflow-x-auto p-2 -m-2"> 
+      <div className="flex flex-1 items-center space-x-2 ">
+        <Input
+          placeholder="Nazov..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="h-8 w-[150px] lg:w-[250px]"
         />
-      )}
-      {table.getColumn("storageLocation") && (
-        <DataTableFacetedFilter
-          column={table.getColumn("storageLocation")}
-          title="Miesto"
-          options={locationOptions}
-        />
-      )}
-      {isFiltered && (
-        <Button
-          variant="ghost"
-          onClick={() => table.resetColumnFilters()}
-          className="h-8 px-2 lg:px-3"
-        >
-          Reset
-          <Cross2Icon className="ml-2 h-4 w-4" />
-        </Button>
-      )}
-      <div className="flex justify-end flex-grow">
-        <DataTableViewOptions table={table} />
+        {table.getColumn("category") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("category")}
+            title="Kategoria"
+            options={foodOptions}
+          />
+        )}
+        {table.getColumn("storageLocation") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("storageLocation")}
+            title="Miesto"
+            options={locationOptions}
+          />
+        )}
+        {isFiltered && (
+          <Button
+            variant="ghost"
+            onClick={() => table.resetColumnFilters()}
+            className="h-8 px-2 lg:px-3"
+          >
+            Reset
+            <Cross2Icon className="ml-2 h-4 w-4" />
+          </Button>
+        )}
+        <div className="flex justify-end flex-grow">
+          <DataTableViewOptions table={table} />
+        </div>
       </div>
     </div>
   );
