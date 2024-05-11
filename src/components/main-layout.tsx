@@ -1,9 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import {
-  CircleUser,
-  Menu,
-  Package2,
-} from "lucide-react";
+import { CircleUser, Menu, Package2 } from "lucide-react";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
@@ -25,9 +21,8 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ pageContent, links }: MainLayoutProps) {
-
-  const handleLogout =async () => {
-    let { error } = await supabase.auth.signOut()
+  const handleLogout = async () => {
+    let { error } = await supabase.auth.signOut();
     if (error) {
       console.error("Error logging out:", error.message);
       return;
@@ -44,7 +39,7 @@ export function MainLayout({ pageContent, links }: MainLayoutProps) {
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <Package2 className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
+            <span className="sr-only">company logo</span>
           </Link>
 
           {links.map((link) => (
@@ -76,33 +71,37 @@ export function MainLayout({ pageContent, links }: MainLayoutProps) {
           </SheetTrigger>
           <SheetContent side="left">
             <nav className="grid gap-6 text-lg font-medium">
-              <Link
-                href="#"
-                className="flex items-center gap-2 text-lg font-semibold"
-              >
-                <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
-              </Link>
+              <SheetTrigger asChild>
+                <Link
+                  to={"/"}
+                  className="flex items-center gap-2 text-lg font-semibold"
+                >
+                  <Package2 className="h-6 w-6" />
+                  <span className="sr-only">company logo</span>
+                </Link>
+              </SheetTrigger>
 
               {links.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  activeProps={{
-                    className: "hover:text-foreground",
-                  }}
-                  inactiveProps={{
-                    className: "text-muted-foreground hover:text-foreground",
-                  }}
-                >
-                  {link.label}
-                </Link>
+                <SheetTrigger key={link.to} asChild>
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    activeProps={{
+                      className: "hover:text-foreground",
+                    }}
+                    inactiveProps={{
+                      className: "text-muted-foreground hover:text-foreground",
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                </SheetTrigger>
               ))}
             </nav>
           </SheetContent>
         </Sheet>
         <div className="flex w-full justify-end items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <div id='top-bar-portal-start' />
+          <div id="top-bar-portal-start" />
           <HeaderSearch />
           <ModeToggle />
           <DropdownMenu>
