@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, CSSProperties } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,8 +12,10 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Column,
 } from "@tanstack/react-table";
 import { useLocalStorage } from "usehooks-ts";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 import {
   Table,
@@ -27,6 +29,38 @@ import { OptionItem } from "@/components/ingredients-table/data/schema";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { useAuth } from "@/auth";
+import { DESKTOP_BREAKPOINT_QUERY } from "@/components/ui/responsive-dialog";
+
+// Make columns sticky
+const getCommonPinningStyles = <TData,>(
+  column: Column<TData>
+): CSSProperties => {
+  const isPinned = column.getIsPinned();
+  // const isLastLeftPinnedColumn =
+  //   isPinned === "left" && column.getIsLastColumn("left");
+  // const isFirstRightPinnedColumn =
+  //   isPinned === "right" && column.getIsFirstColumn("right");
+
+  return {
+    // boxShadow: isLastLeftPinnedColumn
+    //   ? "-4px 0 4px -4px gray inset"
+    //   : isFirstRightPinnedColumn
+    //     ? "4px 0 4px -4px gray inset"
+    //     : undefined,
+    left: isPinned === "left" ? `${column.getStart("left")}px` : undefined,
+    right: isPinned === "right" ? `${column.getAfter("right")}px` : undefined,
+    opacity: isPinned ? 0.95 : 1,
+    position: isPinned ? "sticky" : "relative",
+    width: column.getSize(),
+    zIndex: isPinned ? 1 : 0,
+  };
+};
+
+const columnPinning = {
+  left: ["name"],
+};
+
+const EMPTY_OBJECT = {};
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,10 +78,14 @@ export function DataTable<TData, TValue>({
   locationOptions,
 }: DataTableProps<TData, TValue>) {
   const auth = useAuth();
+  const isDesktop = useMediaQuery(DESKTOP_BREAKPOINT_QUERY);
 
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    useLocalStorage<VisibilityState>(`ingredients-table-col-visibility-${auth?.user?.id}`, {});
+    useLocalStorage<VisibilityState>(
+      `ingredients-table-col-visibility-${auth?.user?.id}`,
+      {}
+    );
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     search != null
       ? [
@@ -68,6 +106,7 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      columnPinning: isDesktop ? EMPTY_OBJECT : columnPinning,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -104,7 +143,14 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
+                    <TableHead
+                      className="bg-background"
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      style={{
+                        ...getCommonPinningStyles<TData>(header.column),
+                      }}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -125,7 +171,11 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className="bg-background"
+                      style={{ ...getCommonPinningStyles<TData>(cell.column) }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
