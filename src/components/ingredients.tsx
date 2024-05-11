@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
 import { supabase } from "@/lib/supabaseClient";
@@ -23,48 +23,48 @@ export function Ingredients() {
   const [row, setRow] = useState<Item | null>(null);
   const [householdId, setHouseholdId] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function getIngredients() {
-      let { data, error } = await supabase
-        .from("ingredient")
-        .select(
-          `
+  const getIngredients = useCallback(async () => {
+    let { data, error } = await supabase
+      .from("ingredient")
+      .select(
+        `
+    id,
+    name,
+    category (
         id,
-        name,
-        category (
-            id,
-            name
-        ),
-        location (
-            id,
-            name
-        ),
-        quantity,
-        household_id
-      `
-        )
-        .order("created_at", { ascending: true });
+        name
+    ),
+    location (
+        id,
+        name
+    ),
+    quantity,
+    household_id
+  `
+      )
+      .order("created_at", { ascending: true });
 
-      let householdId: string | null = null;
+    let householdId: string | null = null;
 
-      if (error) {
-        console.warn(error);
-      } else if (data) {
-        const newData = data.map((item) => {
-          if (householdId == null) householdId = item.household_id;
-          return {
-            id: item.id,
-            name: item.name,
-            category: item.category ?? { id: "empty", name: "" },
-            storageLocation: item.location ?? { id: "empty", name: "" },
-            quantity: item.quantity,
-          };
-        });
-        setTasks(z.array(itemSchema).parse(newData));
-        setHouseholdId(householdId);
-      }
+    if (error) {
+      console.warn(error);
+    } else if (data) {
+      const newData = data.map((item) => {
+        if (householdId == null) householdId = item.household_id;
+        return {
+          id: item.id,
+          name: item.name,
+          category: item.category ?? { id: "empty", name: "" },
+          storageLocation: item.location ?? { id: "empty", name: "" },
+          quantity: item.quantity,
+        };
+      });
+      setTasks(z.array(itemSchema).parse(newData));
+      setHouseholdId(householdId);
     }
+  }, [householdId, setHouseholdId, setTasks]);
 
+  useEffect(() => {
     async function getCategories() {
       let { data, error } = await supabase.from("ingredient_category_option")
         .select(`
@@ -105,9 +105,32 @@ export function Ingredients() {
       }
     }
 
+    function subscribeToChanges() {
+      const status = supabase
+        .channel("custom-all-channel")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "ingredient" },
+          (payload) => {
+            console.log("Change received!", payload);
+            const { eventType } = payload;
+            if (
+              eventType === "UPDATE" ||
+              eventType === "INSERT" ||
+              eventType === "DELETE"
+            ) {
+              getIngredients();
+            }
+          }
+        )
+        .subscribe();
+      console.log("status", status);
+    }
+
     getIngredients();
     getCategories();
     getLocations();
+    subscribeToChanges();
   }, []);
 
   async function onDelete(tableRow: TableRowType) {
