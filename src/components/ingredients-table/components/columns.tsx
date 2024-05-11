@@ -70,18 +70,25 @@ export function getColumns({
 }: IGetColumns): ColumnDef<Item>[] {
   return [
     {
+      id: "actions",
+      cell: ({ row }) => (
+        <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
+      ),
+    },
+    {
       accessorKey: "name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+        <DataTableColumnHeader column={column} title="Názov" />
       ),
-      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      cell: ({ row }) => <div>{row.getValue("name")} </div>,
       // enableSorting: false,
       // enableHiding: false,
     },
+   
     {
       accessorKey: "quantity",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Quantity" />
+        <DataTableColumnHeader column={column} title="No." />
       ),
       cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
     },
@@ -89,7 +96,7 @@ export function getColumns({
       id: "category",
       accessorKey: "category.id",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Kategoria" />
+        <DataTableColumnHeader column={column} title="Kategória" />
       ),
       cell: ({ row }) => <div>{row.original.category?.name}</div>,
   
@@ -109,11 +116,6 @@ export function getColumns({
         return value.includes(row.getValue(id));
       },
     },
-    {
-      id: "actions",
-      cell: ({ row }) => (
-        <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
-      ),
-    },
+  
   ];
 }
