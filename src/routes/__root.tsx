@@ -21,7 +21,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 function RootComponent() {
   const auth = useAuth();
 
-  if(!auth.isAuthenticated) return <Outlet />;
+  if (!auth.isAuthenticated) return <Outlet />;
 
   return (
     <>
@@ -38,7 +38,9 @@ function RootComponent() {
         ]}
         pageContent={<Outlet />}
       />
-      <TanStackRouterDevtools position="bottom-right" initialIsOpen={false} />
+      {import.meta.env.DEV === true && (
+        <TanStackRouterDevtools position="bottom-right" initialIsOpen={false} />
+      )}
     </>
   );
 
