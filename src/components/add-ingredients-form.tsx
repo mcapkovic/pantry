@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,12 +23,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Item, Option } from "@/components/ingredients-table/data/schema";
 import { supabase } from "@/lib/supabaseClient";
+import { DialogClose } from "./ui/dialog";
 
 interface AddIngredientsFormProps {
-  closeDialog: () => void;
   foodOptions?: Option[];
   locationOptions?: Option[];
-  row: Item | null;
+  row?: Item | null;
 }
 
 const formSchema = z.object({
@@ -41,11 +41,11 @@ const formSchema = z.object({
 });
 
 export function AddIngredientsForm({
-  closeDialog,
   foodOptions,
   locationOptions,
   row,
 }: AddIngredientsFormProps) {
+  const closeTriggerRef = useRef<HTMLButtonElement>(null);
   const defaultValues = useMemo(() => {
     if (row == null) {
       return {
@@ -72,6 +72,10 @@ export function AddIngredientsForm({
     defaultValues,
   });
 
+  function handleClose() {
+    closeTriggerRef.current?.click();
+  }
+
   async function onSubmit({
     name,
     category,
@@ -93,9 +97,13 @@ export function AddIngredientsForm({
         },
       ])
       .select();
-
     console.log(data, error);
-    if (closeDialog != null) closeDialog();
+
+    if (error != null) {
+      console.log(error);
+    } else {
+      handleClose();
+    }
   }
 
   return (
@@ -182,6 +190,9 @@ export function AddIngredientsForm({
           )}
         />
         <Button type="submit">Submit</Button>
+        <DialogClose className="hidden" ref={closeTriggerRef}>
+          hidden close button
+        </DialogClose>
       </form>
     </Form>
   );

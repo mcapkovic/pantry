@@ -1,5 +1,4 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { IngredientEditor } from "@/components/ingredient-editor";
 import { Ingredients } from "@/components/ingredients";
 
 type ProductSearch = {
@@ -17,19 +16,10 @@ export const Route = createFileRoute("/ingredients")({
       });
     }
   },
-  component: IngredientsPage,
+  component: Ingredients,
   validateSearch: (searchData: Record<string, string>): ProductSearch => {
     return {
       search: searchData.search,
     };
   },
 });
-
-function IngredientsPage() {
-  return <Ingredients />
-  return (
-    <div className="mt-3">
-      <IngredientEditor />
-    </div>
-  );
-}

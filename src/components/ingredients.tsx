@@ -7,8 +7,9 @@ import { Route } from "@/routes/ingredients";
 import { getColumns } from "@/components/ingredients-table/components/columns";
 import { itemSchema } from "@/components/ingredients-table/data/schema";
 import { Item, Option } from "@/components/ingredients-table/data/schema";
-import { IngredientEditor } from "@/components/ingredient-editor";
 import { Button } from "./ui/button";
+import { ResponsiveDialog } from "./ui/responsive-dialog";
+import { AddIngredientsForm } from "./add-ingredients-form";
 
 export function Ingredients() {
   const { search } = Route.useSearch();
@@ -112,19 +113,26 @@ export function Ingredients() {
   return (
     <div className="mt-3">
       <h1>Ingredients</h1>
-      <IngredientEditor
+      <ResponsiveDialog
         title="Pridat ingredienciu"
-        foodOptions={foodOptions}
-        locationOptions={locationOptions}
-        modalTrigger={<Button variant="outline">add ingredient</Button>}
-      />
-      <IngredientEditor
-        foodOptions={foodOptions}
-        locationOptions={locationOptions}
+        dialogTrigger={<Button variant="outline">add ingredient</Button>}
+      >
+        <AddIngredientsForm
+          foodOptions={foodOptions}
+          locationOptions={locationOptions}
+        />
+      </ResponsiveDialog>
+
+      <ResponsiveDialog
         title="Upravit ingredienciu"
-        modalTrigger={<Button ref={modalTriggerRef} className="hidden" />}
-        row={row}
-      />
+        dialogTrigger={<Button ref={modalTriggerRef} className="hidden" />}
+      >
+        <AddIngredientsForm
+          foodOptions={foodOptions}
+          locationOptions={locationOptions}
+          row={row}
+        />
+      </ResponsiveDialog>
       <div className="m-6">
         <DataTable
           data={tasks}
