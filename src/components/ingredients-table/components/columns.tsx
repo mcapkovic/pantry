@@ -10,7 +10,6 @@ import { labels, priorities, statuses } from "../data/data";
 import { Item } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { Option } from "@/components/ingredients-table/data/schema";
 
 export const columns: ColumnDef<Item>[] = [
   {

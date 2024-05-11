@@ -5,7 +5,7 @@ export const optionsSchema = z.object({
   name: z.string(),
 })
 
-export type Option = z.infer<typeof optionsSchema>
+export type OptionItem = z.infer<typeof optionsSchema>
 
 // We're keeping a simple non-relational schema here.
 // IRL, you will have a schema for your data models.

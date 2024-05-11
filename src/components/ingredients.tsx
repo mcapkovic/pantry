@@ -9,7 +9,7 @@ import {
   getColumns,
 } from "@/components/ingredients-table/components/columns";
 import { itemSchema } from "@/components/ingredients-table/data/schema";
-import { Item, Option } from "@/components/ingredients-table/data/schema";
+import { Item, OptionItem } from "@/components/ingredients-table/data/schema";
 import { Button } from "./ui/button";
 import { ResponsiveDialog } from "./ui/responsive-dialog";
 import { AddIngredientsForm } from "./add-ingredients-form";
@@ -17,8 +17,8 @@ import { AddIngredientsForm } from "./add-ingredients-form";
 export function Ingredients() {
   const { search } = Route.useSearch();
   const [tasks, setTasks] = useState<Item[]>([]);
-  const [foodOptions, setFoodOptions] = useState<Option[]>([]);
-  const [locationOptions, setLocationOptions] = useState<Option[]>([]);
+  const [foodOptions, setFoodOptions] = useState<OptionItem[]>([]);
+  const [locationOptions, setLocationOptions] = useState<OptionItem[]>([]);
   const modalTriggerRef = useRef<HTMLButtonElement>(null);
   const [row, setRow] = useState<Item | null>(null);
   const [householdId, setHouseholdId] = useState<string | null>(null);
@@ -75,13 +75,7 @@ export function Ingredients() {
       if (error) {
         console.warn(error);
       } else if (data) {
-        const items = data.map((item) => {
-          return {
-            label: item.name,
-            value: item.id,
-          };
-        });
-        setFoodOptions(items);
+        setFoodOptions(data);
       }
     }
 
@@ -95,13 +89,7 @@ export function Ingredients() {
       if (error) {
         console.warn(error);
       } else if (data) {
-        const items = data.map((item) => {
-          return {
-            label: item.name,
-            value: item.id,
-          };
-        });
-        setLocationOptions(items);
+        setLocationOptions(data);
       }
     }
 
@@ -165,6 +153,7 @@ export function Ingredients() {
         <AddIngredientsForm
           foodOptions={foodOptions}
           locationOptions={locationOptions}
+          householdId={householdId}
         />
       </ResponsiveDialog>
 

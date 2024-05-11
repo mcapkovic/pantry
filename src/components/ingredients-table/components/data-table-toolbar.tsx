@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { Option } from "@/components/ingredients-table/data/schema";
+import { OptionItem } from "@/components/ingredients-table/data/schema";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  foodOptions: Option[];
-  locationOptions: Option[];
+  foodOptions: OptionItem[];
+  locationOptions: OptionItem[];
 }
 
 export function DataTableToolbar<TData>({

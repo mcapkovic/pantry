@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Option } from "@/components/ingredients-table/data/schema";
+import { OptionItem } from "@/components/ingredients-table/data/schema";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 
@@ -30,8 +30,8 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   search?: string;
-  foodOptions?: Option[];
-  locationOptions?: Option[];
+  foodOptions: OptionItem[];
+  locationOptions: OptionItem[];
 }
 
 export function DataTable<TData, TValue>({
