@@ -13,6 +13,7 @@ import { Item, OptionItem } from "@/components/ingredients-table/data/schema";
 import { Button } from "./ui/button";
 import { ResponsiveDialog } from "./ui/responsive-dialog";
 import { AddIngredientsForm } from "./add-ingredients-form";
+import { Portal } from "@/components/portal";
 
 export function Ingredients() {
   const { search } = Route.useSearch();
@@ -145,17 +146,18 @@ export function Ingredients() {
 
   return (
     <div className="mt-3">
-      <h1>Ingredients</h1>
-      <ResponsiveDialog
-        title="Pridat ingredienciu"
-        dialogTrigger={<Button variant="outline">add ingredient</Button>}
-      >
-        <AddIngredientsForm
-          foodOptions={foodOptions}
-          locationOptions={locationOptions}
-          householdId={householdId}
-        />
-      </ResponsiveDialog>
+      <Portal destinatinId="top-bar-portal-start">
+        <ResponsiveDialog
+          title="Pridat ingredienciu"
+          dialogTrigger={<Button variant="outline">Pridať ingredienciu</Button>}
+        >
+          <AddIngredientsForm
+            foodOptions={foodOptions}
+            locationOptions={locationOptions}
+            householdId={householdId}
+          />
+        </ResponsiveDialog>
+      </Portal>
 
       <ResponsiveDialog
         title="Upravit ingredienciu"
