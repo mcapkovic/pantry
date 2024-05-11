@@ -57,7 +57,7 @@ export const columns: ColumnDef<Item>[] = [
   },
 ];
 
-export type TableRowType = Row<Item>
+export type TableRowType = Row<Item>;
 
 interface IGetColumns {
   onEdit?: (row: TableRowType) => void;
@@ -74,9 +74,7 @@ export function getColumns({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
-      cell: ({ row }) => (
-        <div className="w-[200px]">{row.getValue("name")}</div>
-      ),
+      cell: ({ row }) => <div>{row.getValue("name")}</div>,
       // enableSorting: false,
       // enableHiding: false,
     },
@@ -85,9 +83,7 @@ export function getColumns({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Quantity" />
       ),
-      cell: ({ row }) => (
-        <div className="w-[100px]">{row.getValue("quantity")}</div>
-      ),
+      cell: ({ row }) => <div>{row.getValue("quantity")}</div>,
     },
     {
       id: "category",
@@ -95,11 +91,8 @@ export function getColumns({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Kategoria" />
       ),
-      cell: ({ row }) => (
-        <div className="w-[80px]">{row.original.category?.name}</div>
-      ),
-      // enableSorting: false,
-      // enableHiding: false,
+      cell: ({ row }) => <div>{row.original.category?.name}</div>,
+  
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
       },
@@ -110,11 +103,8 @@ export function getColumns({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Miesto" />
       ),
-      cell: ({ row }) => (
-        <div className="w-[80px]">{row.original.storageLocation?.name}</div>
-      ),
-      // enableSorting: false,
-      // enableHiding: false,
+      cell: ({ row }) => <div>{row.original.storageLocation?.name}</div>,
+  
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));
       },
@@ -122,11 +112,7 @@ export function getColumns({
     {
       id: "actions",
       cell: ({ row }) => (
-        <DataTableRowActions
-          row={row}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
+        <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
       ),
     },
   ];
