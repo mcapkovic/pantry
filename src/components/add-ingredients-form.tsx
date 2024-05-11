@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { clsx } from 'clsx';
+import { clsx } from "clsx";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -143,7 +143,7 @@ export function AddIngredientsForm({
             <FormItem>
               <FormLabel>Názov</FormLabel>
               <FormControl>
-                <Input placeholder="Jablká, Ryza, ..." {...field} autoFocus/>
+                <Input placeholder="Jablká, Ryza, ..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -216,7 +216,9 @@ export function AddIngredientsForm({
             </FormItem>
           )}
         />
-        <Button className={clsx(!isDesktop && 'w-full')} type="submit">Submit</Button>
+        <Button className={clsx(!isDesktop && "w-full")} type="submit">
+          Submit
+        </Button>
         <DialogClose className="hidden" ref={closeTriggerRef}>
           hidden close button
         </DialogClose>
