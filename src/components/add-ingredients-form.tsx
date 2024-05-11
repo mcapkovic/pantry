@@ -55,7 +55,7 @@ export function AddIngredientsForm({
     }
     return {
       name: row.name,
-      pieces: "1",
+      pieces: row.quantity.toString(),
       category:
         row?.category != null && row?.category?.id != "empty"
           ? row.category.id
@@ -76,16 +76,28 @@ export function AddIngredientsForm({
     closeTriggerRef.current?.click();
   }
 
-  async function onSubmit({
+  async function onEdit({
     name,
     category,
     location,
     pieces,
   }: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    const queryResult = await supabase
+      .from("ingredient")
+      .update({ name, location, category, quantity: pieces })
+      .eq("id", row?.id)
+      .select();
 
-    const { data, error } = await supabase
+    return queryResult;
+  }
+
+  async function onAdd({
+    name,
+    category,
+    location,
+    pieces,
+  }: z.infer<typeof formSchema>) {
+    const queryResult = await supabase
       .from("ingredient")
       .insert([
         {
@@ -97,11 +109,21 @@ export function AddIngredientsForm({
         },
       ])
       .select();
-    console.log(data, error);
+
+    return queryResult;
+  }
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+
+    const action = row ? onEdit : onAdd;
+    const { data, error } = await action(values);
 
     if (error != null) {
       console.log(error);
     } else {
+      console.log(data);
       handleClose();
     }
   }

@@ -33,7 +33,7 @@ export function Ingredients() {
             name
         ),
         quantity
-      `);
+      `).order('created_at', { ascending: true });
 
       if (error) {
         console.warn(error);
