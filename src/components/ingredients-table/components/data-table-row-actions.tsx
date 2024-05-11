@@ -67,11 +67,16 @@ export function DataTableRowActions<TData>({
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub> */}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            Delete
-            {/* <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut> */}
-          </DropdownMenuItem>
+
+          {onDelete != null && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onDelete(row)}>
+                Delete
+                {/* <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut> */}
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

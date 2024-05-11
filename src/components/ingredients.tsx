@@ -4,7 +4,10 @@ import { z } from "zod";
 import { supabase } from "@/lib/supabaseClient";
 import { DataTable } from "@/components/ingredients-table/components/data-table";
 import { Route } from "@/routes/ingredients";
-import { getColumns } from "@/components/ingredients-table/components/columns";
+import {
+  TableRowType,
+  getColumns,
+} from "@/components/ingredients-table/components/columns";
 import { itemSchema } from "@/components/ingredients-table/data/schema";
 import { Item, Option } from "@/components/ingredients-table/data/schema";
 import { Button } from "./ui/button";
@@ -22,7 +25,10 @@ export function Ingredients() {
 
   useEffect(() => {
     async function getIngredients() {
-      let { data, error } = await supabase.from("ingredient").select(`
+      let { data, error } = await supabase
+        .from("ingredient")
+        .select(
+          `
         id,
         name,
         category (
@@ -35,15 +41,17 @@ export function Ingredients() {
         ),
         quantity,
         household_id
-      `).order('created_at', { ascending: true });
+      `
+        )
+        .order("created_at", { ascending: true });
 
-      let householdId: string| null = null;
+      let householdId: string | null = null;
 
       if (error) {
         console.warn(error);
       } else if (data) {
         const newData = data.map((item) => {
-          if(householdId == null) householdId = item.household_id;
+          if (householdId == null) householdId = item.household_id;
           return {
             id: item.id,
             name: item.name,
@@ -67,14 +75,13 @@ export function Ingredients() {
       if (error) {
         console.warn(error);
       } else if (data) {
-        setFoodOptions(
-          data.map((item) => {
-            return {
-              label: item.name,
-              value: item.id,
-            };
-          })
-        );
+        const items = data.map((item) => {
+          return {
+            label: item.name,
+            value: item.id,
+          };
+        });
+        setFoodOptions(items);
       }
     }
 
@@ -88,14 +95,13 @@ export function Ingredients() {
       if (error) {
         console.warn(error);
       } else if (data) {
-        setLocationOptions(
-          data.map((item) => {
-            return {
-              label: item.name,
-              value: item.id,
-            };
-          })
-        );
+        const items = data.map((item) => {
+          return {
+            label: item.name,
+            value: item.id,
+          };
+        });
+        setLocationOptions(items);
       }
     }
 
@@ -104,13 +110,24 @@ export function Ingredients() {
     getLocations();
   }, []);
 
+  async function onDelete(tableRow: TableRowType) {
+    console.log("delete", tableRow.original.id);
+    const { error } = await supabase
+      .from("ingredient")
+      .delete()
+      .eq("id", tableRow.original.id);
+  }
+
+  function onEdit(tableRow: TableRowType) {
+    setRow(tableRow.original);
+    modalTriggerRef.current?.click();
+  }
+
   const columns = useMemo(
     () =>
       getColumns({
-        onEdit: (tableRow) => {
-          setRow(tableRow.original);
-          modalTriggerRef.current?.click();
-        },
+        onEdit,
+        onDelete,
       }),
     []
   );

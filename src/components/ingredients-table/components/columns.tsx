@@ -58,12 +58,16 @@ export const columns: ColumnDef<Item>[] = [
   },
 ];
 
+export type TableRowType = Row<Item>
+
 interface IGetColumns {
-  onEdit?: (row: Row<Item>) => void;
+  onEdit?: (row: TableRowType) => void;
+  onDelete?: (row: TableRowType) => void;
 }
 
 export function getColumns({
   onEdit,
+  onDelete,
 }: IGetColumns): ColumnDef<Item>[] {
   return [
     {
@@ -122,6 +126,7 @@ export function getColumns({
         <DataTableRowActions
           row={row}
           onEdit={onEdit}
+          onDelete={onDelete}
         />
       ),
     },
