@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { CategoryDashboard } from "@/components/category-dashboard";
+import { CategoryDashboard } from "@/components/category-dashboard/category-dashboard";
 
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context, location }) => {

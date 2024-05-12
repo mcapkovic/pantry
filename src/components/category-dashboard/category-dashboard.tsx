@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import groupBy from "lodash/groupBy";
 
 import {
@@ -17,8 +17,11 @@ import {
   DotsHorizontalIcon,
   DotIcon,
 } from "@radix-ui/react-icons";
+import { ingredientsRead } from "@/api/ingredients";
+import { z } from "zod";
+import { itemSchema, Item } from "@/components/category-dashboard/schema";
 
-function IngredientRow({ ingredient }) {
+function IngredientRow({ ingredient }: { ingredient: Item }) {
   return (
     <li>
       <div className="flex">
@@ -26,10 +29,10 @@ function IngredientRow({ ingredient }) {
           <DotIcon className="mr-1" /> {ingredient?.name}
         </div>
         <div className="flex items-center text-sm mx-2 grow text-muted-foreground">
-          {ingredient?.pieces}
+          {ingredient?.quantity}
         </div>
         <div className="flex items-center text-sm text-muted-foreground">
-          {ingredient?.storageLocation}
+          {ingredient?.location?.name}
         </div>
       </div>
     </li>
@@ -37,18 +40,38 @@ function IngredientRow({ ingredient }) {
 }
 
 export function CategoryDashboard() {
-  const groupedValues = useMemo(() => {
-    return Object.entries(groupBy(ingredients, "category"));
-  }, [ingredients]);
+  const [groupedItems, setGroupedItems] = useState<[string, Item[]][]>([]);
+  // const groupedValues = useMemo(() => {
+  //   return Object.entries(groupBy(ingredients, "category"));
+  // }, [ingredients]);
+
+  const getIngredients = useCallback(async () => {
+    let { data, error } = await ingredientsRead();
+    if (error) {
+      console.warn(error);
+    } else if (data) {
+      const parsedData = z.array(itemSchema).parse(data);
+      const groupedData = groupBy(parsedData, (item) => {
+        return item?.category?.id ?? "empty";
+      });
+      setGroupedItems(Object.entries(groupedData));
+    }
+  }, [setGroupedItems]);
+
+  useEffect(() => {
+    getIngredients();
+  }, []);
 
   return (
     <div className="flex justify-center">
       <div className="p-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:max-w-2xl md:max-w-5xl grow sm:grow-0	">
-        {groupedValues.map(([groupId, values]) => {
+        {groupedItems.map(([groupId, values]) => {
           return (
             <Card key={groupId} className="">
               <CardHeader>
-                <CardTitle>{groupId}</CardTitle>
+                <CardTitle>
+                  {values[0]?.category?.name ?? "Bez kategorie"}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul>

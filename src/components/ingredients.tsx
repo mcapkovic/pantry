@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 import { ResponsiveDialog } from "./ui/responsive-dialog";
 import { AddIngredientsForm } from "./add-ingredients-form";
 import { Portal } from "@/components/portal";
+import {ingredientsRead} from '@/api/ingredients'
 
 export function Ingredients() {
   const { search } = Route.useSearch();
@@ -25,26 +26,7 @@ export function Ingredients() {
   const [householdId, setHouseholdId] = useState<string | null>(null);
 
   const getIngredients = useCallback(async () => {
-    let { data, error } = await supabase
-      .from("ingredient")
-      .select(
-        `
-    id,
-    name,
-    category (
-        id,
-        name
-    ),
-    location (
-        id,
-        name
-    ),
-    quantity,
-    household_id
-  `
-      )
-      .order("created_at", { ascending: true });
-
+    let { data, error } = await ingredientsRead();
     let householdId: string | null = null;
 
     if (error) {
