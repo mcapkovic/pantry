@@ -15,6 +15,12 @@ interface DataTableToolbarProps<TData> {
   locationOptions: OptionItem[];
 }
 
+function removeSearchParam() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("search");
+  window.history.replaceState({}, "", url.toString());
+}
+
 export function DataTableToolbar<TData>({
   table,
   foodOptions,
@@ -22,7 +28,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   return (
-    <div className="overflow-x-auto p-2 -m-2"> 
+    <div className="overflow-x-auto p-2 -m-2">
       <div className="flex flex-1 items-center space-x-2 ">
         <Input
           placeholder="Nazov..."
@@ -49,7 +55,10 @@ export function DataTableToolbar<TData>({
         {isFiltered && (
           <Button
             variant="ghost"
-            onClick={() => table.resetColumnFilters()}
+            onClick={() => {
+              table.resetColumnFilters();
+              removeSearchParam();
+            }}
             className="h-8 px-2 lg:px-3"
           >
             Reset

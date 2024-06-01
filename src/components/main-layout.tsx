@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { HeaderSearch } from "@/components/page-header/search";
+// import { HeaderSearch } from "@/components/page-header/search";
 import { supabase } from "@/lib/supabaseClient";
 import { Command } from "@/components/command/command";
 
@@ -104,7 +104,7 @@ export function MainLayout({ pageContent, links }: MainLayoutProps) {
         <div className="flex w-full justify-end items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <div id="top-bar-portal-start" />
           <Command />
-          <HeaderSearch />
+          {/* <HeaderSearch /> */}
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
