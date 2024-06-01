@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Dashboard } from "@/components/examples/Dashboard";
-import { Playground } from "@/components/examples/Playground";
-import TaskPage from "@/components/examples/tasks/page";
+import { Dashboard } from "@/pages/examples/Dashboard";
+import { Playground } from "@/pages/examples/Playground";
+import TaskPage from "@/pages/examples/tasks/page";
 
 export const Route = createFileRoute("/examples")({
   component: () => (

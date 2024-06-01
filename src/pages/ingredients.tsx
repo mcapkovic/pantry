@@ -10,9 +10,9 @@ import {
 } from "@/components/ingredients-table/components/columns";
 import { itemSchema } from "@/components/ingredients-table/data/schema";
 import { Item, OptionItem } from "@/components/ingredients-table/data/schema";
-import { Button } from "./ui/button";
-import { ResponsiveDialog } from "./ui/responsive-dialog";
-import { AddIngredientsForm } from "./add-ingredients-form";
+import { Button } from "../components/ui/button";
+import { ResponsiveDialog } from "../components/ui/responsive-dialog";
+import { AddIngredientsForm } from "../components/add-ingredients-form";
 import { Portal } from "@/components/portal";
 import {ingredientsRead} from '@/api/ingredients'
 

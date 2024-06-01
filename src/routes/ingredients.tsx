@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Ingredients } from "@/components/ingredients";
+import { Ingredients } from "@/pages/ingredients";
 
 type ProductSearch = {
   search: string;

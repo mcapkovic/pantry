@@ -19,7 +19,7 @@ import {
 } from "@radix-ui/react-icons";
 import { ingredientsRead } from "@/api/ingredients";
 import { z } from "zod";
-import { itemSchema, Item } from "@/components/category-dashboard/schema";
+import { itemSchema, Item } from "@/pages/category-dashboard/schema";
 
 function IngredientRow({ ingredient }: { ingredient: Item }) {
   return (
