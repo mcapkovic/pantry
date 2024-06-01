@@ -1,41 +1,73 @@
+import { useForm } from "react-hook-form";
+import { useCallback, useState } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate, getRouteApi } from "@tanstack/react-router";
+import { AlertCircle } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { supabase } from "@/lib/supabaseClient";
-
-import * as React from "react";
-import { useNavigate, getRouteApi } from "@tanstack/react-router";
 import { useAuth } from "@/auth";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+const formSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(4, {
+    message: "Heslo musi mat aspon 4 znaky.",
+  }),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const routeApi = getRouteApi("/login");
 
 export function Login() {
   const auth = useAuth();
   const navigate = useNavigate();
-
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [name, setName] = React.useState("");
-
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    }
+  });
+  const { setError } = form;
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const search = routeApi.useSearch();
 
-  const handleLogin = async (evt: React.FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    setIsSubmitting(true);
+  const onSubmit = useCallback(
+    async ({ email, password }: FormValues) => {
+      setIsSubmitting(true);
 
-    let { error } = await supabase.auth.signInWithPassword({
-      email: "cupo44+test3@gmail.com",
-      password: "heslo",
-    });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      console.error("Error logging in:", error.message);
-      return;
-    }
-    setIsSubmitting(false);
-  };
+      setIsSubmitting(false);
+
+      if (error) {
+        console.error("Error logging in:", error.message);
+        setError("root.serverError", {
+          type: error.code,
+          message: error.message,
+        });
+        return;
+      }
+    },
+    [setError],
+  );
 
   if (auth.isAuthenticated) navigate({ to: search.redirect });
-
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
@@ -47,49 +79,78 @@ export function Login() {
             </p>
           </div>
           <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <a
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </a>
-              </div>
-              <Input id="password" type="password" required />
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-              onClick={(e) => handleLogin(e)}
-            >
-              Login
-            </Button>
-            {/* <Button variant="outline" className="w-full">
-              Login with Google
-            </Button> */}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="xy@gmail.com"
+                          {...field}
+                          type="email"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center">
+                        <FormLabel>Heslo</FormLabel>
+                        <a
+                          // href="/forgot-password"
+                          href="/login"
+                          className="ml-auto inline-block text-sm underline"
+                        >
+                          Forgot your password?
+                        </a>
+                      </div>
+
+                      <FormControl>
+                        <Input {...field} type="password" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {form?.formState?.errors?.root?.serverError && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>
+                      {form?.formState?.errors?.root?.serverError?.message}
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                <Button className={"w-full"} type="submit" disabled={isSubmitting}>
+                  Prihlasit sa
+                </Button>
+              </form>
+            </Form>
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <a href="#" className="underline">
+            <a href="/login" className="underline">
               Sign up
             </a>
           </div>
         </div>
       </div>
-      <div className="hidden bg-muted lg:block max-h-screen">
+      <div className="hidden max-h-screen bg-muted lg:block">
         <img
           // src="https://images.unsplash.com/photo-1514924013411-cbf25faa35bb?q=80&w=800&auto=format&fit=crop"
           // src="https://images.unsplash.com/photo-1514924013411-cbf25faa35bb"
