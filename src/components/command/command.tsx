@@ -1,4 +1,4 @@
-import React from "react";
+import {useCallback, useState, useEffect} from "react";
 import {
   Calculator,
   Calendar,
@@ -6,7 +6,9 @@ import {
   Settings,
   Smile,
   User,
+  Search,
 } from "lucide-react";
+import { z } from "zod";
 
 import {
   CommandDialog,
@@ -19,13 +21,22 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import { NavSection } from "@/components/command/nav-section";
-
-
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {ingredientsRead} from '@/api/ingredients'
+import { itemSchema, Item } from "@/pages/category-dashboard/schema";
+import { IngredientsGroup } from "@/components/command/ingredients-group";
 
 export function Command() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [ingredients, setIngredients] = useState<Item[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -37,20 +48,50 @@ export function Command() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  const getIngredients = useCallback(async () => {
+    const { data, error } = await ingredientsRead();
+
+    if (error) {
+      console.warn(error);
+    } else if (data) {
+      const parsedData = z.array(itemSchema).parse(data);
+      setIngredients(parsedData);
+    }
+  }, []);
+
+  useEffect(() => {
+    getIngredients();
+  }, [getIngredients]);
+
   return (
     <>
-      <p className="text-sm text-muted-foreground">
-        Press{" "}
-        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-          <span className="text-xs">⌘</span>J
-        </kbd>
-      </p>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button size="icon" variant="outline" onClick={() => setOpen(true)}>
+              <Search className="h-4 w-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="text-sm text-muted-foreground">
+              Press{" "}
+              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                <span className="text-xs">⌘</span>J
+              </kbd>
+            </p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
 
-          <CommandGroup heading="Suggestions">
+          <IngredientsGroup ingredients={ingredients} closeDialog={() => setOpen(false)} />
+          <CommandSeparator />
+
+          {/* <CommandGroup heading="Suggestions">
             <CommandItem onSelect={() => console.log("dddd")}>
               <Calendar className="mr-2 h-4 w-4" />
               <span>Calendar</span>
@@ -63,13 +104,13 @@ export function Command() {
               <Calculator className="mr-2 h-4 w-4" />
               <span>Calculator</span>
             </CommandItem>
-          </CommandGroup>
+          </CommandGroup> */}
 
           <NavSection closeDialog={() => setOpen(false)} />
 
           <CommandSeparator />
 
-          <CommandGroup heading="Settings">
+          {/* <CommandGroup heading="Settings">
             <CommandItem>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
@@ -85,7 +126,7 @@ export function Command() {
               <span>Settings</span>
               <CommandShortcut>⌘S</CommandShortcut>
             </CommandItem>
-          </CommandGroup>
+          </CommandGroup> */}
         </CommandList>
       </CommandDialog>
     </>
