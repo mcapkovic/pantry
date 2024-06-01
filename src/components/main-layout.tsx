@@ -14,6 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { HeaderSearch } from "@/components/page-header/search";
 import { supabase } from "@/lib/supabaseClient";
+import { Command } from "@/components/command/command";
 
 interface MainLayoutProps {
   pageContent: React.ReactNode;
@@ -102,6 +103,7 @@ export function MainLayout({ pageContent, links }: MainLayoutProps) {
         </Sheet>
         <div className="flex w-full justify-end items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <div id="top-bar-portal-start" />
+          <Command />
           <HeaderSearch />
           <ModeToggle />
           <DropdownMenu>
