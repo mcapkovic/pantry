@@ -25,7 +25,7 @@ function IngredientRow({ ingredient }: { ingredient: Item }) {
   return (
     <li>
       <div className="flex">
-        <div className="flex items-center  font-medium">
+        <div className="flex items-center font-medium">
           <DotIcon className="mr-1" /> {ingredient?.name}
         </div>
         <Badge
