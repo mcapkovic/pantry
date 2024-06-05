@@ -6,35 +6,24 @@ import { CommandGroup, CommandItem } from "@/components/ui/command";
 const navPages = [
   {
     id: "1",
-    title: "Home",
-    value: "home",
-    route: "/",
-  },
-  {
-    id: "2",
-    title: "Ingredients",
-    value: "ingredients",
+    title: "Add ingredient",
+    value: "action-ingredients",
     route: "/ingredients",
-  },
-  {
-    id: "3",
-    title: "About",
-    value: "about",
-    route: "/about",
+    actionName: 'addIngredient',
   },
 ];
 
-export function NavSection({ closeDialog }: { closeDialog: () => void }) {
+export function ActionGroup({ closeDialog }: { closeDialog: () => void }) {
   const navigate = useNavigate();
   const search = useCommandState((state) => state.search);
   const hasSearch = search != null && search.length > 0;
 
-  const handleRedirect = (route: string) => {
+  const handleRedirect = (route: string, actionName: string) => {
     closeDialog();
     navigate({
       to: route,
       search: {
-        actionName: 'addIngredient',
+        actionName,
       }
     });
   };
@@ -43,13 +32,13 @@ export function NavSection({ closeDialog }: { closeDialog: () => void }) {
   const pages = hasSearch ? navPages : navPages.slice(0, 1);
 
   return (
-    <CommandGroup heading="Navigation">
+    <CommandGroup heading="Actions">
       {pages.map((page) => (
         <CommandItem
           key={page.id}
-          keywords={["nav", page.title.toLowerCase()]}
+          keywords={["action", page.title.toLowerCase()]}
           value={page.value}
-          onSelect={() => handleRedirect(page.route)}
+          onSelect={() => handleRedirect(page.route, page.actionName)}
         >
           <AppWindow className="mr-2 h-4 w-4" />
           <span>{page.title}</span>

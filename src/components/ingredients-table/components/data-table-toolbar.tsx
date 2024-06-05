@@ -8,17 +8,12 @@ import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { OptionItem } from "@/components/ingredients-table/data/schema";
+import { removeSearchParam } from "@/utils/url";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   foodOptions: OptionItem[];
   locationOptions: OptionItem[];
-}
-
-function removeSearchParam() {
-  const url = new URL(window.location.href);
-  url.searchParams.delete("search");
-  window.history.replaceState({}, "", url.toString());
 }
 
 export function DataTableToolbar<TData>({
@@ -57,7 +52,7 @@ export function DataTableToolbar<TData>({
             variant="ghost"
             onClick={() => {
               table.resetColumnFilters();
-              removeSearchParam();
+              removeSearchParam('search');
             }}
             className="h-8 px-2 lg:px-3"
           >

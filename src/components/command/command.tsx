@@ -31,6 +31,7 @@ import {
 import {ingredientsRead} from '@/api/ingredients'
 import { itemSchema, Item } from "@/pages/category-dashboard/schema";
 import { IngredientsGroup } from "@/components/command/ingredients-group";
+import { ActionGroup } from "@/components/command/actions-group";
 
 export function Command() {
   const [open, setOpen] = useState(false);
@@ -63,6 +64,8 @@ export function Command() {
     getIngredients();
   }, [getIngredients]);
 
+  const closeDialog = () => setOpen(false);
+
   return (
     <>
       <TooltipProvider>
@@ -88,7 +91,7 @@ export function Command() {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
 
-          <IngredientsGroup ingredients={ingredients} closeDialog={() => setOpen(false)} />
+          <IngredientsGroup ingredients={ingredients} closeDialog={closeDialog} />
           <CommandSeparator />
 
           {/* <CommandGroup heading="Suggestions">
@@ -106,9 +109,10 @@ export function Command() {
             </CommandItem>
           </CommandGroup> */}
 
-          <NavSection closeDialog={() => setOpen(false)} />
+          <NavSection closeDialog={closeDialog} />
 
           <CommandSeparator />
+          <ActionGroup closeDialog={closeDialog} />
 
           {/* <CommandGroup heading="Settings">
             <CommandItem>

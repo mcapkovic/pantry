@@ -14,10 +14,11 @@ import { Button } from "../components/ui/button";
 import { ResponsiveDialog } from "../components/ui/responsive-dialog";
 import { AddIngredientsForm } from "../components/add-ingredients-form";
 import { Portal } from "@/components/portal";
-import {ingredientsRead} from '@/api/ingredients'
+import { ingredientsRead } from "@/api/ingredients";
+import { useURLActions } from "@/hooks/use-url-actions";
 
 export function Ingredients() {
-  const { search } = Route.useSearch();
+  const { search, actionName } = Route.useSearch();
   const [tasks, setTasks] = useState<Item[]>([]);
   const [foodOptions, setFoodOptions] = useState<OptionItem[]>([]);
   const [locationOptions, setLocationOptions] = useState<OptionItem[]>([]);
@@ -45,7 +46,7 @@ export function Ingredients() {
       setTasks(z.array(itemSchema).parse(newData));
       setHouseholdId(householdId);
     }
-  }, [householdId, setHouseholdId, setTasks]);
+  }, [setHouseholdId, setTasks]);
 
   useEffect(() => {
     async function getCategories() {
@@ -92,7 +93,7 @@ export function Ingredients() {
             ) {
               getIngredients();
             }
-          }
+          },
         )
         .subscribe();
       console.log("status", status);
@@ -103,6 +104,19 @@ export function Ingredients() {
     getLocations();
     subscribeToChanges();
   }, []);
+
+  const actions = useMemo(() => {
+    return [
+      {
+        action: "addIngredient",
+        handler: () => {
+          modalTriggerRef.current?.click();
+        },
+      },
+    ];
+  }, []);
+
+  useURLActions({ actions, urlAction: actionName });
 
   async function onDelete(tableRow: TableRowType) {
     console.log("delete", tableRow.original.id);
@@ -123,7 +137,7 @@ export function Ingredients() {
         onEdit,
         onDelete,
       }),
-    []
+    [],
   );
 
   return (
