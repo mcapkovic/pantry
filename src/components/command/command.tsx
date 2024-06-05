@@ -20,7 +20,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { NavSection } from "@/components/command/nav-section";
+import { NavGroup } from "@/components/command/nav-group";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -109,7 +109,7 @@ export function Command() {
             </CommandItem>
           </CommandGroup> */}
 
-          <NavSection closeDialog={closeDialog} />
+          <NavGroup closeDialog={closeDialog} />
 
           <CommandSeparator />
           <ActionGroup closeDialog={closeDialog} />

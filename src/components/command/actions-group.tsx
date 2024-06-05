@@ -3,13 +3,14 @@ import { useCommandState } from "cmdk";
 import { useNavigate } from "@tanstack/react-router";
 import { CommandGroup, CommandItem } from "@/components/ui/command";
 
-const navPages = [
+export const ADD_INGREDIENT = 'addIngredient'
+
+const actionPages = [
   {
-    id: "1",
     title: "Add ingredient",
-    value: "action-ingredients",
+    id: "action-ingredients",
     route: "/ingredients",
-    actionName: 'addIngredient',
+    actionName: ADD_INGREDIENT,
   },
 ];
 
@@ -29,7 +30,7 @@ export function ActionGroup({ closeDialog }: { closeDialog: () => void }) {
   };
 
   // slice results for default view (no search)
-  const pages = hasSearch ? navPages : navPages.slice(0, 1);
+  const pages = hasSearch ? actionPages : actionPages.slice(0, 1);
 
   return (
     <CommandGroup heading="Actions">
@@ -37,7 +38,7 @@ export function ActionGroup({ closeDialog }: { closeDialog: () => void }) {
         <CommandItem
           key={page.id}
           keywords={["action", page.title.toLowerCase()]}
-          value={page.value}
+          value={page.id}
           onSelect={() => handleRedirect(page.route, page.actionName)}
         >
           <AppWindow className="mr-2 h-4 w-4" />

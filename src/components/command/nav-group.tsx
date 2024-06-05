@@ -5,26 +5,23 @@ import { CommandGroup, CommandItem } from "@/components/ui/command";
 
 const navPages = [
   {
-    id: "1",
     title: "Home",
-    value: "home",
+    id: "nav-home",
     route: "/",
   },
   {
-    id: "2",
     title: "Ingredients",
-    value: "ingredients",
+    id: "nav-ingredients",
     route: "/ingredients",
   },
   {
-    id: "3",
     title: "About",
-    value: "about",
+    id: "nav-about",
     route: "/about",
   },
 ];
 
-export function NavSection({ closeDialog }: { closeDialog: () => void }) {
+export function NavGroup({ closeDialog }: { closeDialog: () => void }) {
   const navigate = useNavigate();
   const search = useCommandState((state) => state.search);
   const hasSearch = search != null && search.length > 0;
@@ -33,9 +30,6 @@ export function NavSection({ closeDialog }: { closeDialog: () => void }) {
     closeDialog();
     navigate({
       to: route,
-      search: {
-        actionName: 'addIngredient',
-      }
     });
   };
 
@@ -48,7 +42,7 @@ export function NavSection({ closeDialog }: { closeDialog: () => void }) {
         <CommandItem
           key={page.id}
           keywords={["nav", page.title.toLowerCase()]}
-          value={page.value}
+          value={page.id}
           onSelect={() => handleRedirect(page.route)}
         >
           <AppWindow className="mr-2 h-4 w-4" />

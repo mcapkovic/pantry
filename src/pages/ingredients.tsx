@@ -16,6 +16,7 @@ import { AddIngredientsForm } from "../components/add-ingredients-form";
 import { Portal } from "@/components/portal";
 import { ingredientsRead } from "@/api/ingredients";
 import { useURLActions } from "@/hooks/use-url-actions";
+import {ADD_INGREDIENT} from '@/components/command/actions-group'
 
 export function Ingredients() {
   const { search, actionName } = Route.useSearch();
@@ -108,7 +109,7 @@ export function Ingredients() {
   const actions = useMemo(() => {
     return [
       {
-        action: "addIngredient",
+        action: ADD_INGREDIENT,
         handler: () => {
           modalTriggerRef.current?.click();
         },
