@@ -2,8 +2,8 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Ingredients } from "@/pages/ingredients";
 
 type ProductSearch = {
-  search: string;
-  actionName: string;
+  search?: string;
+  actionName?: string;
 };
 
 export const Route = createFileRoute("/ingredients")({

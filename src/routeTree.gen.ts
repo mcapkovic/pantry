@@ -11,13 +11,24 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PostsImport } from './routes/posts'
 import { Route as LoginImport } from './routes/login'
 import { Route as IngredientsImport } from './routes/ingredients'
 import { Route as ExamplesImport } from './routes/examples'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as PostsIndexImport } from './routes/posts.index'
+import { Route as PostsPostIdImport } from './routes/posts.$postId'
+import { Route as PostsPostIdIndexImport } from './routes/posts.$postId.index'
+import { Route as PostsPostIdDetailImport } from './routes/posts.$postId.detail'
+import { Route as PostsPostIdDetailSubPostIdImport } from './routes/posts.$postId.detail.$subPostId'
 
 // Create/Update Routes
+
+const PostsRoute = PostsImport.update({
+  path: '/posts',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LoginRoute = LoginImport.update({
   path: '/login',
@@ -44,6 +55,33 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const PostsIndexRoute = PostsIndexImport.update({
+  path: '/',
+  getParentRoute: () => PostsRoute,
+} as any)
+
+const PostsPostIdRoute = PostsPostIdImport.update({
+  path: '/$postId',
+  getParentRoute: () => PostsRoute,
+} as any)
+
+const PostsPostIdIndexRoute = PostsPostIdIndexImport.update({
+  path: '/',
+  getParentRoute: () => PostsPostIdRoute,
+} as any)
+
+const PostsPostIdDetailRoute = PostsPostIdDetailImport.update({
+  path: '/detail',
+  getParentRoute: () => PostsPostIdRoute,
+} as any)
+
+const PostsPostIdDetailSubPostIdRoute = PostsPostIdDetailSubPostIdImport.update(
+  {
+    path: '/$subPostId',
+    getParentRoute: () => PostsPostIdDetailRoute,
+  } as any,
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -68,6 +106,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/posts': {
+      preLoaderRoute: typeof PostsImport
+      parentRoute: typeof rootRoute
+    }
+    '/posts/$postId': {
+      preLoaderRoute: typeof PostsPostIdImport
+      parentRoute: typeof PostsImport
+    }
+    '/posts/': {
+      preLoaderRoute: typeof PostsIndexImport
+      parentRoute: typeof PostsImport
+    }
+    '/posts/$postId/detail': {
+      preLoaderRoute: typeof PostsPostIdDetailImport
+      parentRoute: typeof PostsPostIdImport
+    }
+    '/posts/$postId/': {
+      preLoaderRoute: typeof PostsPostIdIndexImport
+      parentRoute: typeof PostsPostIdImport
+    }
+    '/posts/$postId/detail/$subPostId': {
+      preLoaderRoute: typeof PostsPostIdDetailSubPostIdImport
+      parentRoute: typeof PostsPostIdDetailImport
+    }
   }
 }
 
@@ -79,6 +141,13 @@ export const routeTree = rootRoute.addChildren([
   ExamplesRoute,
   IngredientsRoute,
   LoginRoute,
+  PostsRoute.addChildren([
+    PostsPostIdRoute.addChildren([
+      PostsPostIdDetailRoute.addChildren([PostsPostIdDetailSubPostIdRoute]),
+      PostsPostIdIndexRoute,
+    ]),
+    PostsIndexRoute,
+  ]),
 ])
 
 /* prettier-ignore-end */

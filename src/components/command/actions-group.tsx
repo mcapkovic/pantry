@@ -8,7 +8,7 @@ export const ADD_INGREDIENT = 'addIngredient'
 const actionPages = [
   {
     title: "Add ingredient",
-    id: "action-ingredients",
+    id: "add-ingredients",
     route: "/ingredients",
     actionName: ADD_INGREDIENT,
   },
@@ -37,7 +37,7 @@ export function ActionGroup({ closeDialog }: { closeDialog: () => void }) {
       {pages.map((page) => (
         <CommandItem
           key={page.id}
-          keywords={["action", page.title.toLowerCase()]}
+        //   keywords={["action", 'add', page.title.toLowerCase()]}
           value={page.id}
           onSelect={() => handleRedirect(page.route, page.actionName)}
         >

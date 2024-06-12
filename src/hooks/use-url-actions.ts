@@ -11,7 +11,7 @@ export function useURLActions({
   urlAction,
 }: {
   actions: Action[];
-  urlAction: string;
+  urlAction?: string;
 }) {
   const router = useRouter();
 
