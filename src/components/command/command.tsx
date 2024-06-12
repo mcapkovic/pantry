@@ -1,4 +1,6 @@
-import {useCallback, useState, useEffect} from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
+import { useCommandState } from "cmdk";
+
 import {
   Calculator,
   Calendar,
@@ -28,10 +30,53 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {ingredientsRead} from '@/api/ingredients'
+import { ingredientsRead } from "@/api/ingredients";
 import { itemSchema, Item } from "@/pages/category-dashboard/schema";
 import { IngredientsGroup } from "@/components/command/ingredients-group";
 import { ActionGroup } from "@/components/command/actions-group";
+
+const NAV_GROUP = "navGroup";
+const ACTION_GROUP = "actionGroup";
+const INGREDIENTS_GROUP = "ingredientsGroup";
+const ALL_GROUPS = [NAV_GROUP, ACTION_GROUP, INGREDIENTS_GROUP];
+
+interface ItemGroupsProps {
+  closeDialog: () => void;
+  ingredients: Item[];
+}
+
+function ItemGroups({ closeDialog, ingredients }: ItemGroupsProps) {
+  const search = useCommandState((state) => state.search);
+
+  const showGroups = useMemo(() => {
+    if (!search.includes(" ")) return new Set(ALL_GROUPS);
+    if (search.startsWith("add ")) return new Set([ACTION_GROUP]);
+    if (search.startsWith("nav ")) return new Set([NAV_GROUP]);
+    return new Set(ALL_GROUPS);
+  }, [search]);
+
+  return (
+    <>
+      {showGroups.has(INGREDIENTS_GROUP) && (
+        <IngredientsGroup ingredients={ingredients} closeDialog={closeDialog} />
+      )}
+
+      {showGroups.has(NAV_GROUP) && (
+        <>
+          <CommandSeparator />
+          <NavGroup closeDialog={closeDialog} />
+        </>
+      )}
+
+      {showGroups.has(ACTION_GROUP) && (
+        <>
+          <CommandSeparator />
+          <ActionGroup closeDialog={closeDialog} />
+        </>
+      )}
+    </>
+  );
+}
 
 export function Command() {
   const [open, setOpen] = useState(false);
@@ -64,8 +109,6 @@ export function Command() {
     getIngredients();
   }, [getIngredients]);
 
-  const closeDialog = () => setOpen(false);
-
   return (
     <>
       <TooltipProvider>
@@ -90,9 +133,10 @@ export function Command() {
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-
-          <IngredientsGroup ingredients={ingredients} closeDialog={closeDialog} />
-          <CommandSeparator />
+          <ItemGroups
+            closeDialog={() => setOpen(false)}
+            ingredients={ingredients}
+          />
 
           {/* <CommandGroup heading="Suggestions">
             <CommandItem onSelect={() => console.log("dddd")}>
@@ -108,11 +152,6 @@ export function Command() {
               <span>Calculator</span>
             </CommandItem>
           </CommandGroup> */}
-
-          <NavGroup closeDialog={closeDialog} />
-
-          <CommandSeparator />
-          <ActionGroup closeDialog={closeDialog} />
 
           {/* <CommandGroup heading="Settings">
             <CommandItem>

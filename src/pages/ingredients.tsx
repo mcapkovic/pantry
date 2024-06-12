@@ -97,7 +97,7 @@ export function Ingredients() {
           },
         )
         .subscribe();
-      console.log("status", status);
+      // console.log("status", status);
     }
 
     getIngredients();

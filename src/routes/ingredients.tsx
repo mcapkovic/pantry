@@ -4,6 +4,7 @@ import { Ingredients } from "@/pages/ingredients";
 type ProductSearch = {
   search?: string;
   actionName?: string;
+  ingredientId?: string;
 };
 
 export const Route = createFileRoute("/ingredients")({
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/ingredients")({
     return {
       search: searchData.search,
       actionName: searchData.actionName,
+      ingredientId: searchData.ingredientId,
     };
   },
 });

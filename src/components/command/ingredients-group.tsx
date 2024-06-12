@@ -21,12 +21,13 @@ export function IngredientsGroup({
   const ingredients = hasSearch ? allIngredients : allIngredients.slice(0, 3);
 
   const handleRedirect = useCallback(
-    (ingredient: string) => {
+    ({name, id}: {name: string, id: string}) => {
       closeDialog();
       navigate({
         to: "/ingredients",
         search: {
-          search: ingredient,
+          search: name,
+          ingredientId: id,
         },
       });
     },
@@ -40,7 +41,9 @@ export function IngredientsGroup({
           key={ingredient.id}
           keywords={[ingredient.name.toLowerCase()]}
           value={ingredient.id}
-          onSelect={() => handleRedirect(ingredient.name)}
+          // id={ingredient.id}
+          // value={ingredient.name.toLowerCase()}
+          onSelect={() => handleRedirect({name: ingredient.name, id: ingredient.id})}
         >
           <ChefHat className="mr-2 h-4 w-4" />
           <span>{ingredient.name}</span>
