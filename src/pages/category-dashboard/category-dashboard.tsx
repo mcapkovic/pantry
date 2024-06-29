@@ -21,21 +21,25 @@ import { ingredientsRead } from "@/api/ingredients";
 import { z } from "zod";
 import { itemSchema, Item } from "@/pages/category-dashboard/schema";
 import { Badge } from "@/components/ui/badge";
+
 function IngredientRow({ ingredient }: { ingredient: Item }) {
   return (
-    <li>
+    <li className="py-2">
       <div className="flex">
-        <div className="flex items-center font-medium">
-          <DotIcon className="mr-1" /> {ingredient?.name}
+        <div className="flex grow items-center font-medium">
+          {ingredient?.name}
         </div>
-        <Badge
-          variant="secondary"
-          className=" mx-4 rounded-sm px-1 font-normal"
-        >
-          {ingredient.quantity}
-        </Badge>
-        <div className="flex items-center text-sm text-muted-foreground">
-          {ingredient?.location?.name}
+
+        <div className="flex items-center">
+          <Badge
+            variant="secondary"
+            className=" mx-4 rounded-sm px-1 font-normal"
+          >
+            {ingredient.quantity}
+          </Badge>
+          <div className="flex items-center text-sm text-muted-foreground">
+            {ingredient?.location?.name}
+          </div>
         </div>
       </div>
     </li>
@@ -67,7 +71,7 @@ export function CategoryDashboard() {
 
   return (
     <div className="flex justify-center">
-      <div className="p-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:max-w-2xl md:max-w-5xl grow sm:grow-0	">
+      <div className="grid grow grid-cols-1 gap-4 p-2 sm:max-w-2xl sm:grow-0 sm:grid-cols-2 md:max-w-5xl md:grid-cols-3	">
         {groupedItems.map(([groupId, values]) => {
           return (
             <Card key={groupId} className="">
@@ -77,7 +81,7 @@ export function CategoryDashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul>
+                <ul className="flex flex-col divide-y">
                   {values.map((value) => (
                     <IngredientRow key={value.id} ingredient={value} />
                   ))}
