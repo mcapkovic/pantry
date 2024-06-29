@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import groupBy from "lodash/groupBy";
+import { cn } from "@/lib/utils";
 
 import {
   Card,
@@ -42,7 +43,10 @@ function IngredientRow({
         <div className="flex items-center">
           <Badge
             variant="secondary"
-            className=" mx-4 rounded-sm px-1 font-normal"
+            className={cn(
+              "mx-4 rounded-sm px-1 font-normal",
+              onQuantityClick != null && "cursor-pointer",
+            )}
             onClick={onQuantityClick}
           >
             {ingredient.quantity}
