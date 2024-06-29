@@ -85,6 +85,8 @@ export function Ingredients() {
     getCategories();
     getLocations();
     subscribeToAllIngredientChanges(getIngredients);
+    // NOTE: this should only run once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const actions = useMemo(() => {
