@@ -43,13 +43,13 @@ function IngredientRow({
         <div className="flex items-center">
           <Badge
             variant="secondary"
-            className={cn(
-              "mx-4 rounded-sm px-1 font-normal",
-              onQuantityClick != null && "cursor-pointer",
-            )}
-            onClick={onQuantityClick}
+            className="mx-4 rounded-sm px-1 font-normal"
           >
-            {ingredient.quantity}
+            {onQuantityClick != null ? (
+              <button onClick={onQuantityClick}>{ingredient.quantity}</button>
+            ) : (
+              ingredient.quantity
+            )}
           </Badge>
           <div className="flex items-center text-sm text-muted-foreground">
             {ingredient?.location?.name}
