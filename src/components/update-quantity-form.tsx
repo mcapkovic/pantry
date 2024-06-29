@@ -113,7 +113,7 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
             type="button"
             variant="outline"
             size="icon"
-            className="h-8 w-8 shrink-0 rounded-full"
+            className="h-8 w-8 shrink-0 rounded-full mb-1"
             onClick={handleDecrease}
           >
             <Minus className="h-4 w-4" />
@@ -138,7 +138,7 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
             type="button"
             variant="outline"
             size="icon"
-            className="h-8 w-8 shrink-0 rounded-full"
+            className="h-8 w-8 shrink-0 rounded-full mb-1"
             onClick={handleIncrease}
           >
             <Plus className="h-4 w-4" />
