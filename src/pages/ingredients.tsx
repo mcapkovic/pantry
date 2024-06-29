@@ -14,9 +14,12 @@ import { Button } from "../components/ui/button";
 import { ResponsiveDialog } from "../components/ui/responsive-dialog";
 import { AddIngredientsForm } from "../components/add-ingredients-form";
 import { Portal } from "@/components/portal";
-import { ingredientsRead } from "@/api/ingredients";
+import {
+  ingredientsRead,
+  subscribeToAllIngredientChanges,
+} from "@/api/ingredients";
 import { useURLActions } from "@/hooks/use-url-actions";
-import {ADD_INGREDIENT} from '@/components/command/actions-group'
+import { ADD_INGREDIENT } from "@/components/command/actions-group";
 
 export function Ingredients() {
   const { search, actionName } = Route.useSearch();
@@ -78,32 +81,10 @@ export function Ingredients() {
       }
     }
 
-    function subscribeToChanges() {
-      const status = supabase
-        .channel("custom-all-channel")
-        .on(
-          "postgres_changes",
-          { event: "*", schema: "public", table: "ingredient" },
-          (payload) => {
-            console.log("Change received!", payload);
-            const { eventType } = payload;
-            if (
-              eventType === "UPDATE" ||
-              eventType === "INSERT" ||
-              eventType === "DELETE"
-            ) {
-              getIngredients();
-            }
-          },
-        )
-        .subscribe();
-      // console.log("status", status);
-    }
-
     getIngredients();
     getCategories();
     getLocations();
-    subscribeToChanges();
+    subscribeToAllIngredientChanges(getIngredients);
   }, []);
 
   const actions = useMemo(() => {

@@ -23,3 +23,25 @@ export async function ingredientsRead() {
   
     return result;
   }
+
+  export function subscribeToAllIngredientChanges(callback: () => void) {
+    const status = supabase
+      .channel("custom-all-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "ingredient" },
+        (payload) => {
+          console.log("Change received!", payload);
+          const { eventType } = payload;
+          if (
+            eventType === "UPDATE" ||
+            eventType === "INSERT" ||
+            eventType === "DELETE"
+          ) {
+            callback !== null && callback();
+          }
+        },
+      )
+      .subscribe();
+    // console.log("status", status);
+  }

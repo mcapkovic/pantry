@@ -28,7 +28,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { DialogClose } from "./ui/dialog";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { DESKTOP_BREAKPOINT_QUERY } from "@/components/ui/responsive-dialog";
-import {  Item } from "@/pages/category-dashboard/schema";
+import { Item } from "@/pages/category-dashboard/schema";
 
 interface AddIngredientsFormProps {
   row?: Item | null;
@@ -73,8 +73,6 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('ss')
-
     const { data, error } = await onEdit(values);
 
     if (error != null) {

@@ -18,7 +18,10 @@ import {
   DotsHorizontalIcon,
   DotIcon,
 } from "@radix-ui/react-icons";
-import { ingredientsRead } from "@/api/ingredients";
+import {
+  ingredientsRead,
+  subscribeToAllIngredientChanges,
+} from "@/api/ingredients";
 import { z } from "zod";
 import { itemSchema, Item } from "@/pages/category-dashboard/schema";
 import { Badge } from "@/components/ui/badge";
@@ -83,7 +86,10 @@ export function CategoryDashboard() {
   }, [setGroupedItems]);
 
   useEffect(() => {
+    subscribeToAllIngredientChanges(getIngredients);
     getIngredients();
+    // NOTE: this should only run once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onQuantityClickHandler = (row: Item) => {
@@ -94,7 +100,7 @@ export function CategoryDashboard() {
   return (
     <>
       <ResponsiveDialog
-        title="Upravit mnozstvo"
+        title={row?.name ?? ""}
         dialogTrigger={<Button ref={modalTriggerRef} className="hidden" />}
       >
         <UpdateQuantityForm row={row} />
