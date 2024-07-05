@@ -35,6 +35,10 @@ function RootComponent() {
             to: "/ingredients",
             label: "Ingredients",
           },
+          {
+            to: "/shopping-list",
+            label: "Shopping list",
+          },
         ]}
         pageContent={<Outlet />}
       />

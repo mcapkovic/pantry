@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ShoppingListImport } from './routes/shopping-list'
 import { Route as PostsImport } from './routes/posts'
 import { Route as LoginImport } from './routes/login'
 import { Route as IngredientsImport } from './routes/ingredients'
@@ -24,6 +25,11 @@ import { Route as PostsPostIdDetailImport } from './routes/posts.$postId.detail'
 import { Route as PostsPostIdDetailSubPostIdImport } from './routes/posts.$postId.detail.$subPostId'
 
 // Create/Update Routes
+
+const ShoppingListRoute = ShoppingListImport.update({
+  path: '/shopping-list',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const PostsRoute = PostsImport.update({
   path: '/posts',
@@ -110,6 +116,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsImport
       parentRoute: typeof rootRoute
     }
+    '/shopping-list': {
+      preLoaderRoute: typeof ShoppingListImport
+      parentRoute: typeof rootRoute
+    }
     '/posts/$postId': {
       preLoaderRoute: typeof PostsPostIdImport
       parentRoute: typeof PostsImport
@@ -148,6 +158,7 @@ export const routeTree = rootRoute.addChildren([
     ]),
     PostsIndexRoute,
   ]),
+  ShoppingListRoute,
 ])
 
 /* prettier-ignore-end */

@@ -48,11 +48,11 @@ export function MainLayout({ pageContent, links }: MainLayoutProps) {
               key={link.to}
               to={link.to}
               activeProps={{
-                className: "text-foreground",
+                className: "text-foreground text-nowrap",
               }}
               inactiveProps={{
                 className:
-                  "text-muted-foreground transition-colors hover:text-foreground",
+                  "text-muted-foreground text-nowrap transition-colors hover:text-foreground",
               }}
             >
               {link.label}

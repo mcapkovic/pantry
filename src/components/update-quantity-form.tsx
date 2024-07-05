@@ -89,7 +89,7 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
       let value = Number(form.getValues("pieces") ?? "0");
       if (direction === "increase") {
         value += 1;
-      } else if (direction === "decrease" && value > 0) {
+      } else if (direction === "decrease") {
         value -= 1;
       }
       form.setValue("pieces", String(value));

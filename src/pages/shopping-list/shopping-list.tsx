@@ -19,7 +19,7 @@ import {
   DotIcon,
 } from "@radix-ui/react-icons";
 import {
-  availableIngredientsRead,
+  shoppingListRead,
   subscribeToAllIngredientChanges,
 } from "@/api/ingredients";
 import { z } from "zod";
@@ -63,7 +63,7 @@ function IngredientRow({
   );
 }
 
-export function CategoryDashboard() {
+export function ShoppingList() {
   const [groupedItems, setGroupedItems] = useState<[string, Item[]][]>([]);
   const modalTriggerRef = useRef<HTMLButtonElement>(null);
   const [row, setRow] = useState<Item | null>(null);
@@ -73,7 +73,7 @@ export function CategoryDashboard() {
   // }, [ingredients]);
 
   const getIngredients = useCallback(async () => {
-    let { data, error } = await availableIngredientsRead();
+    let { data, error } = await shoppingListRead();
     if (error) {
       console.warn(error);
     } else if (data) {
