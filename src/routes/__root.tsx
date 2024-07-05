@@ -29,16 +29,17 @@ function RootComponent() {
         links={[
           {
             to: "/",
-            label: "Home",
-          },
-          {
-            to: "/ingredients",
-            label: "Ingredients",
+            label: "Kategórie",
           },
           {
             to: "/shopping-list",
-            label: "Shopping list",
+            label: "Nákupný zoznam",
           },
+          {
+            to: "/ingredients",
+            label: "Všetky ingrediencie",
+          },
+         
         ]}
         pageContent={<Outlet />}
       />
