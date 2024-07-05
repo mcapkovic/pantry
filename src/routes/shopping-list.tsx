@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { ShoppingList } from "@/pages/shopping-list/shopping-list";
+import { ShoppingList } from "@/pages/shopping-list";
 
 export const Route = createFileRoute("/shopping-list")({
   beforeLoad: ({ context, location }) => {
