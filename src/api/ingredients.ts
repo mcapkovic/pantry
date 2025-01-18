@@ -16,7 +16,8 @@ export async function ingredientsRead() {
       name
   ),
   quantity,
-  household_id
+  household_id,
+  expiration_date
   `
     )
     .order("created_at", { ascending: true });

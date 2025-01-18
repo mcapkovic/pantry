@@ -45,6 +45,7 @@ export function Ingredients() {
           category: item.category ?? { id: "empty", name: "" },
           storageLocation: item.location ?? { id: "empty", name: "" },
           quantity: item.quantity,
+          expirationDate: item.expiration_date,
         };
       });
       setTasks(z.array(itemSchema).parse(newData));
@@ -123,7 +124,7 @@ export function Ingredients() {
       }),
     [],
   );
-
+  
   return (
     <div className="mt-3">
       <Portal destinatinId="top-bar-portal-start">

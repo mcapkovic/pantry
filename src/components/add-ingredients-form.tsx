@@ -28,6 +28,10 @@ import { supabase } from "@/lib/supabaseClient";
 import { DialogClose } from "./ui/dialog";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { DESKTOP_BREAKPOINT_QUERY } from "@/components/ui/responsive-dialog";
+import { ExpirationDatePicker } from "@/components/expiration-date-picker";
+import { PostgrestError } from "@supabase/supabase-js";
+import { format } from "date-fns";
+import { ingredientFormSchema } from "@/schemas/ingredient-form";
 
 interface AddIngredientsFormProps {
   foodOptions: OptionItem[];
@@ -35,15 +39,6 @@ interface AddIngredientsFormProps {
   row?: Item | null;
   householdId?: string | null;
 }
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Nazov musi mat aspon 2 znaky.",
-  }),
-  category: z.string().optional(),
-  location: z.string().optional(),
-  pieces: z.string().optional(),
-});
 
 export function AddIngredientsForm({
   foodOptions,
@@ -72,11 +67,14 @@ export function AddIngredientsForm({
         row?.storageLocation != null && row?.storageLocation?.id != "empty"
           ? row.storageLocation.id
           : undefined,
+      expirationDate: row.expirationDate
+        ? new Date(row.expirationDate)
+        : undefined,
     };
   }, [row]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof ingredientFormSchema>>({
+    resolver: zodResolver(ingredientFormSchema),
     defaultValues,
   });
 
@@ -89,10 +87,21 @@ export function AddIngredientsForm({
     category,
     location,
     pieces,
-  }: z.infer<typeof formSchema>) {
+    expirationDate,
+  }: z.infer<typeof ingredientFormSchema>) {
+    const formattedDate = expirationDate
+      ? format(expirationDate, "yyyy-MM-dd")
+      : undefined;
+
     const queryResult = await supabase
       .from("ingredient")
-      .update({ name, location, category, quantity: pieces })
+      .update({
+        name,
+        location,
+        category,
+        quantity: pieces,
+        expiration_date: formattedDate,
+      })
       .eq("id", row?.id)
       .select();
 
@@ -104,7 +113,12 @@ export function AddIngredientsForm({
     category,
     location,
     pieces,
-  }: z.infer<typeof formSchema>) {
+    expirationDate,
+  }: z.infer<typeof ingredientFormSchema>) {
+    const formattedDate = expirationDate
+      ? format(expirationDate, "yyyy-MM-dd")
+      : undefined;
+
     const queryResult = await supabase
       .from("ingredient")
       .insert([
@@ -113,6 +127,7 @@ export function AddIngredientsForm({
           location,
           category,
           quantity: pieces,
+          expiration_date: formattedDate,
           household_id: householdId, // TODO: this should be on BE
         },
       ])
@@ -121,9 +136,13 @@ export function AddIngredientsForm({
     return queryResult;
   }
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof ingredientFormSchema>) {
     const action = row ? onEdit : onAdd;
-    const { data, error } = await action(values);
+    const {
+      data,
+      error,
+    }: { data: any[] | null; error: PostgrestError | null } =
+      await action(values);
 
     if (error != null) {
       console.log(error);
@@ -143,7 +162,11 @@ export function AddIngredientsForm({
             <FormItem>
               <FormLabel>Názov</FormLabel>
               <FormControl>
-                <Input placeholder="Jablká, Ryza, ..." {...field} autoFocus={row == null} />
+                <Input
+                  placeholder="Jablká, Ryza, ..."
+                  {...field}
+                  autoFocus={row == null}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -216,8 +239,23 @@ export function AddIngredientsForm({
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="expirationDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Dátum expirácie</FormLabel>
+              <FormControl>
+                <ExpirationDatePicker {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button className={clsx(!isDesktop && "w-full")} type="submit">
-          Submit
+          {row ? "Upraviť" : "Pridať"}
         </Button>
         <DialogClose className="hidden" ref={closeTriggerRef}>
           hidden close button

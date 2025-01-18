@@ -121,6 +121,13 @@ export function getColumns({
       },
     },
     {
+      accessorKey: "expirationDate",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Dátum exp." />
+      ),
+      cell: ({ row }) => <div>{row.getValue("expirationDate")}</div>,
+    },
+    {
       id: "actions",
       cell: ({ row }) => (
         <DataTableRowActions row={row} onEdit={onEdit} onDelete={onDelete} />
