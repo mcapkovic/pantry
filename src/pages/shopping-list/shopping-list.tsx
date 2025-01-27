@@ -23,7 +23,7 @@ import {
   subscribeToAllIngredientChanges,
 } from "@/api/ingredients";
 import { z } from "zod";
-import { itemSchema, Item } from "@/pages/category-dashboard/schema";
+import { itemSchema, Item } from "@/pages/shopping-list/schema";
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
