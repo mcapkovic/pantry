@@ -29,7 +29,7 @@ interface AddIngredientsFormProps {
 
 const formSchema = z.object({
   pieces: z.string(),
-  expirationDate: z.date(),
+  expirationDate: z.date().optional(),
 });
 
 export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {

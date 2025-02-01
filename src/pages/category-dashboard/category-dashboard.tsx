@@ -119,12 +119,10 @@ export function CategoryDashboard() {
 
   const getIngredients = useCallback(async () => {
     let { data, error } = await availableIngredientsRead();
-    console.log(data);
     if (error) {
       console.warn(error);
     } else if (data) {
       const parsedData = z.array(itemSchema).parse(data);
-      console.log(parsedData);
       const groupedData = groupBy(parsedData, (item) => {
         return item?.category?.id ?? "empty";
       });
