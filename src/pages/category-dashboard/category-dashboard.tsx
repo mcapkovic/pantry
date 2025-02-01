@@ -28,6 +28,26 @@ import { Badge } from "@/components/ui/badge";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { UpdateQuantityForm } from "@/components/update-quantity-form";
+import { differenceInDays, format } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cva } from "class-variance-authority";
+
+const varningVariants = cva(" w-2", {
+  variants: {
+    variant: {
+      default: "bg-green-300 dark:bg-green-800",
+      warning: "bg-orange-400 dark:bg-orange-600",
+      danger: "bg-red-500 dark:bg-red-800",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
 
 function IngredientRow({
   ingredient,
@@ -36,9 +56,37 @@ function IngredientRow({
   ingredient: Item;
   onQuantityClick: () => void;
 }) {
+  const daysUntilExpiration = useMemo(() => {
+    if (!ingredient.expiration_date) return null;
+    return differenceInDays(new Date(ingredient.expiration_date), new Date());
+  }, [ingredient.expiration_date]);
+
+  const expirationDate = useMemo(() => {
+    if (!ingredient.expiration_date) return null;
+    return format(new Date(ingredient.expiration_date), "dd.MM.yyyy");
+  }, [ingredient.expiration_date]);
+
+  const variant = useMemo(() => {
+    if (daysUntilExpiration == null) return undefined;
+    if (daysUntilExpiration <= 3) return "danger";
+    if (daysUntilExpiration <= 7) return "warning";
+    return "default";
+  }, [daysUntilExpiration]);
+
   return (
     <li className="py-2">
-      <div className="flex">
+      <div className="relative flex pl-4">
+        {expirationDate != null ? (
+          <Popover>
+            <PopoverTrigger>
+              <div className={cn(varningVariants({ variant }), "mr-2 h-2")} />
+            </PopoverTrigger>
+            <PopoverContent>
+              {`${daysUntilExpiration} dni do ${expirationDate}`}
+            </PopoverContent>
+          </Popover>
+        ) : null}
+
         <div className="flex grow items-center font-medium">
           {ingredient?.name}
         </div>
@@ -54,6 +102,7 @@ function IngredientRow({
               ingredient.quantity
             )}
           </Badge>
+
           <div className="flex items-center text-sm text-muted-foreground">
             {ingredient?.location?.name}
           </div>
@@ -74,10 +123,12 @@ export function CategoryDashboard() {
 
   const getIngredients = useCallback(async () => {
     let { data, error } = await availableIngredientsRead();
+    console.log(data);
     if (error) {
       console.warn(error);
     } else if (data) {
       const parsedData = z.array(itemSchema).parse(data);
+      console.log(parsedData);
       const groupedData = groupBy(parsedData, (item) => {
         return item?.category?.id ?? "empty";
       });

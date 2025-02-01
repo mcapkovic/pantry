@@ -41,7 +41,8 @@ export async function availableIngredientsRead() {
       name
   ),
   quantity,
-  household_id
+  household_id,
+  expiration_date
   `
     )
     .gt("quantity", 0)
