@@ -10,26 +10,18 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-// import { Item, OptionItem } from "@/components/ingredients-table/data/schema";
 import { supabase } from "@/lib/supabaseClient";
 import { DialogClose } from "./ui/dialog";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { DESKTOP_BREAKPOINT_QUERY } from "@/components/ui/responsive-dialog";
 import { Item } from "@/pages/category-dashboard/schema";
+import { ExpirationDatePicker } from "@/components/expiration-date-picker";
 
 interface AddIngredientsFormProps {
   row?: Item | null;
@@ -37,6 +29,7 @@ interface AddIngredientsFormProps {
 
 const formSchema = z.object({
   pieces: z.string(),
+  expirationDate: z.date(),
 });
 
 export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
@@ -51,6 +44,9 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
     }
     return {
       pieces: row.quantity.toString(),
+      expirationDate: row.expiration_date
+        ? new Date(row.expiration_date)
+        : undefined,
     };
   }, [row]);
 
@@ -63,10 +59,16 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
     closeTriggerRef.current?.click();
   }
 
-  async function onEdit({ pieces }: z.infer<typeof formSchema>) {
+  async function onEdit({
+    pieces,
+    expirationDate,
+  }: z.infer<typeof formSchema>) {
     const queryResult = await supabase
       .from("ingredient")
-      .update({ quantity: pieces })
+      .update({
+        quantity: pieces,
+        expiration_date: expirationDate,
+      })
       .eq("id", row?.id)
       .select();
 
@@ -108,12 +110,28 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex justify-center items-end gap-3" >
+        <div className="flex justify-center">
+          <FormField
+            control={form.control}
+            name="expirationDate"
+            render={({ field }) => (
+              <FormItem className="w-3/4">
+                <FormLabel>Dátum expirácie</FormLabel>
+                <FormControl>
+                  <ExpirationDatePicker {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex items-end justify-center gap-3">
           <Button
             type="button"
             variant="outline"
             size="icon"
-            className="h-8 w-8 shrink-0 rounded-full mb-1"
+            className="mb-1 h-8 w-8 shrink-0 rounded-full"
             onClick={handleDecrease}
           >
             <Minus className="h-4 w-4" />
@@ -138,7 +156,7 @@ export function UpdateQuantityForm({ row }: AddIngredientsFormProps) {
             type="button"
             variant="outline"
             size="icon"
-            className="h-8 w-8 shrink-0 rounded-full mb-1"
+            className="mb-1 h-8 w-8 shrink-0 rounded-full"
             onClick={handleIncrease}
           >
             <Plus className="h-4 w-4" />

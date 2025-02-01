@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/popover";
 import { cva } from "class-variance-authority";
 
-const varningVariants = cva(" w-2", {
+const varningVariants = cva("h-2 w-2", {
   variants: {
     variant: {
       default: "bg-green-300 dark:bg-green-800",
@@ -79,7 +79,7 @@ function IngredientRow({
         {expirationDate != null ? (
           <Popover>
             <PopoverTrigger>
-              <div className={cn(varningVariants({ variant }), "mr-2 h-2")} />
+              <div className={cn(varningVariants({ variant }), "mr-2")} />
             </PopoverTrigger>
             <PopoverContent>
               {`${daysUntilExpiration} dni do ${expirationDate}`}
@@ -116,10 +116,6 @@ export function CategoryDashboard() {
   const [groupedItems, setGroupedItems] = useState<[string, Item[]][]>([]);
   const modalTriggerRef = useRef<HTMLButtonElement>(null);
   const [row, setRow] = useState<Item | null>(null);
-
-  // const groupedValues = useMemo(() => {
-  //   return Object.entries(groupBy(ingredients, "category"));
-  // }, [ingredients]);
 
   const getIngredients = useCallback(async () => {
     let { data, error } = await availableIngredientsRead();
