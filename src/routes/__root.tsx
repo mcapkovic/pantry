@@ -39,7 +39,10 @@ function RootComponent() {
             to: "/ingredients",
             label: "Všetky ingrediencie",
           },
-         
+          {
+            to: "/export",
+            label: "Export",
+          },
         ]}
         pageContent={<Outlet />}
       />

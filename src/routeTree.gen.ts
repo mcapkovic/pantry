@@ -15,6 +15,7 @@ import { Route as ShoppingListImport } from './routes/shopping-list'
 import { Route as PostsImport } from './routes/posts'
 import { Route as LoginImport } from './routes/login'
 import { Route as IngredientsImport } from './routes/ingredients'
+import { Route as ExportImport } from './routes/export'
 import { Route as ExamplesImport } from './routes/examples'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
@@ -43,6 +44,11 @@ const LoginRoute = LoginImport.update({
 
 const IngredientsRoute = IngredientsImport.update({
   path: '/ingredients',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ExportRoute = ExportImport.update({
+  path: '/export',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -104,6 +110,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamplesImport
       parentRoute: typeof rootRoute
     }
+    '/export': {
+      preLoaderRoute: typeof ExportImport
+      parentRoute: typeof rootRoute
+    }
     '/ingredients': {
       preLoaderRoute: typeof IngredientsImport
       parentRoute: typeof rootRoute
@@ -149,6 +159,7 @@ export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AboutRoute,
   ExamplesRoute,
+  ExportRoute,
   IngredientsRoute,
   LoginRoute,
   PostsRoute.addChildren([
